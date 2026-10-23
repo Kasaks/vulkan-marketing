@@ -1,0 +1,11 @@
+---
+import { contacts } from '../data/site';
+import Icon from './Icon.astro';
+---
+<ul class="contact-links">
+  {contacts.map(contact => <li>
+    {contact.url
+      ? <a href={contact.url} target="_blank" rel="noopener noreferrer"><span>{contact.name}</span><Icon name="arrow" size={21}/><span class="sr-only"> — открыть в новой вкладке</span></a>
+      : <div class="contact-pending"><span>{contact.name}</span><span>Контакт уточняется</span></div>}
+  </li>)}
+</ul>

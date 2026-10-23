@@ -8,7 +8,6 @@ function syncTheme() {
 themeButton?.addEventListener('click', () => {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
-  try { localStorage.setItem('vulkan-theme', next); } catch { /* Theme still works without storage. */ }
   syncTheme();
 });
 syncTheme();
@@ -38,6 +37,7 @@ matchMedia('(min-width: 761px)').addEventListener('change', () => closeMenu());
 
 document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
   const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
+  if (!slides.length) return;
   const counter = carousel.querySelector<HTMLElement>('[data-count]');
   let active = 0;
   const render = () => {
@@ -72,31 +72,105 @@ document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
   render();
 });
 
+// Fix the page in place while a dialog is open, including on touch devices.
+let savedScroll = 0;
+function lockScroll() {
+  if (document.body.classList.contains('modal-open')) return;
+  savedScroll = window.scrollY;
+  document.body.classList.add('modal-open');
+  document.body.style.top = `-${savedScroll}px`;
+}
+function unlockScroll() {
+  if (document.querySelector('dialog[open]')) return;
+  if (!document.body.classList.contains('modal-open')) return;
+  document.body.classList.remove('modal-open');
+  document.body.style.top = '';
+  const root = document.documentElement;
+  const scrollBehavior = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, savedScroll);
+  root.style.scrollBehavior = scrollBehavior;
+}
 function openDialog(id: string) {
   const dialog = document.getElementById(id);
-  if (!(dialog instanceof HTMLDialogElement)) return;
+  if (!(dialog instanceof HTMLDialogElement) || dialog.open) return;
+  lockScroll();
   dialog.showModal();
-  document.body.classList.add('modal-open');
 }
-document.querySelectorAll<HTMLAnchorElement>('[data-dialog-open]').forEach(trigger => trigger.addEventListener('click', event => {
-  event.preventDefault(); openDialog(trigger.dataset.dialogOpen || '');
+document.querySelectorAll<HTMLElement>('[data-dialog-open]').forEach(trigger => trigger.addEventListener('click', event => {
+  event.preventDefault();
+  closeMenu();
+  openDialog(trigger.dataset.dialogOpen || '');
 }));
 document.querySelectorAll<HTMLDialogElement>('dialog').forEach(dialog => {
   dialog.querySelector('[data-close]')?.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => {
     const box = dialog.getBoundingClientRect();
-    if (event.target === dialog && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom)) dialog.close();
+    const backdrop = event.target === dialog && (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom);
+    const gallerySpace = dialog.id === 'gallery-dialog' && event.target instanceof HTMLElement && event.target.matches('.gallery-shell, .gallery-stage, .gallery-stage figure');
+    if (backdrop || gallerySpace) dialog.close();
   });
-  dialog.addEventListener('close', () => document.body.classList.toggle('modal-open', Boolean(document.querySelector('dialog[open]'))));
+  dialog.addEventListener('close', () => queueMicrotask(unlockScroll));
 });
-document.querySelectorAll<HTMLButtonElement>('[data-project-from-service]').forEach(trigger => trigger.addEventListener('click', () => {
-  trigger.closest('dialog')?.close();
-  openDialog('project-dialog');
-  const message = document.querySelector<HTMLTextAreaElement>('#project-form textarea');
-  if (message) message.value = `Интересует услуга «${trigger.dataset.projectFromService}». `;
-}));
-document.querySelector<HTMLFormElement>('#project-form')?.addEventListener('submit', event => {
+document.querySelectorAll<HTMLAnchorElement>('[data-contact-from-service]').forEach(trigger => trigger.addEventListener('click', event => {
   event.preventDefault();
-  const status = document.querySelector<HTMLElement>('.form-status');
-  if (status) status.textContent = 'Форма работает. Это демонстрация: данные не отправлены. Подключим приём заявок после согласования контактов.';
+  trigger.closest('dialog')?.close();
+  openDialog('contact-dialog');
+}));
+
+type GalleryImage = { src: string; alt: string; caption?: string };
+const galleryDialog = document.querySelector<HTMLDialogElement>('#gallery-dialog');
+const galleryImage = document.querySelector<HTMLImageElement>('#gallery-image');
+const galleryCaption = document.querySelector<HTMLElement>('#gallery-caption');
+const galleryCount = document.querySelector<HTMLElement>('[data-gallery-count]');
+let galleryImages: GalleryImage[] = [];
+let galleryActive = 0;
+let galleryTrigger: HTMLElement | null = null;
+function renderGallery() {
+  const image = galleryImages[galleryActive];
+  if (!image || !galleryImage) return;
+  galleryImage.src = image.src;
+  galleryImage.alt = image.alt;
+  if (galleryCaption) galleryCaption.textContent = image.caption || image.alt;
+  if (galleryCount) galleryCount.textContent = `${galleryActive + 1} / ${galleryImages.length}`;
+  galleryDialog?.querySelectorAll<HTMLButtonElement>('[data-gallery-prev], [data-gallery-next]').forEach(button => { button.disabled = galleryImages.length < 2; });
+}
+function moveGallery(offset: number) {
+  if (!galleryImages.length) return;
+  galleryActive = (galleryActive + offset + galleryImages.length) % galleryImages.length;
+  renderGallery();
+}
+document.querySelectorAll<HTMLElement>('[data-case-gallery]').forEach(gallery => {
+  gallery.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach(trigger => trigger.addEventListener('click', () => {
+    try { galleryImages = JSON.parse(gallery.dataset.galleryImages || '[]'); } catch { return; }
+    if (!galleryImages.length) return;
+    galleryActive = Math.min(Number(trigger.dataset.galleryOpen) || 0, galleryImages.length - 1);
+    galleryTrigger = trigger;
+    const title = document.getElementById('gallery-dialog-title');
+    if (title) title.textContent = gallery.dataset.galleryTitle || 'Фотографии кейса';
+    renderGallery();
+    openDialog('gallery-dialog');
+  }));
+});
+galleryDialog?.querySelector('[data-gallery-prev]')?.addEventListener('click', () => moveGallery(-1));
+galleryDialog?.querySelector('[data-gallery-next]')?.addEventListener('click', () => moveGallery(1));
+galleryDialog?.addEventListener('keydown', event => {
+  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+    event.preventDefault(); event.stopPropagation(); moveGallery(event.key === 'ArrowLeft' ? -1 : 1);
+  }
+});
+let galleryTouchX = 0, galleryTouchY = 0;
+galleryDialog?.addEventListener('touchstart', event => {
+  galleryTouchX = event.changedTouches[0].clientX;
+  galleryTouchY = event.changedTouches[0].clientY;
+}, { passive: true });
+galleryDialog?.addEventListener('touchend', event => {
+  const dx = event.changedTouches[0].clientX - galleryTouchX;
+  const dy = event.changedTouches[0].clientY - galleryTouchY;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) moveGallery(dx < 0 ? 1 : -1);
+}, { passive: true });
+galleryDialog?.addEventListener('wheel', event => { event.preventDefault(); }, { passive: false });
+galleryDialog?.addEventListener('close', () => {
+  galleryImage?.removeAttribute('src');
+  galleryTrigger?.focus({ preventScroll: true });
 });
