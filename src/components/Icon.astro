@@ -1,0 +1,15 @@
+---
+interface Props { name: string; size?: number; }
+const { name, size = 24 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  {name === 'arrow' && <><path d="M4 12h15M13 6l6 6-6 6" /></>}
+  {name === 'target' && <><circle cx="11" cy="13" r="8.5"/><circle cx="11" cy="13" r="5"/><path d="M11 13l9-9M16 3v5h5"/></>}
+  {name === 'chart' && <><path d="M3 13h4v8H3zM10 8h4v13h-4zM17 3h4v18h-4z"/></>}
+  {name === 'settings' && <><path d="M9.5 3h5l.6 3 2.4 1.4 2.8-1 2.5 4.2-2.2 2v2.8l2.2 2-2.5 4.2-2.8-1-2.4 1.4-.6 3h-5l-.6-3L6.5 20l-2.8 1-2.5-4.2 2.2-2V12l-2.2-2 2.5-4.2 2.8 1 2.4-1.4z" transform="translate(1 -1) scale(.9)"/><circle cx="12" cy="12" r="3.5"/></>}
+  {name === 'sun' && <><circle cx="12" cy="12" r="4"/><path d="M12 1v2M12 21v2M1 12h2M21 12h2M4 4l1.5 1.5M18.5 18.5 20 20M4 20l1.5-1.5M18.5 5.5 20 4"/></>}
+  {name === 'moon' && <path d="M20.5 14.1A8.5 8.5 0 0 1 9.9 3.5 8.5 8.5 0 1 0 20.5 14.1Z"/>}
+  {name === 'menu' && <path d="M4 7h16M4 12h16M4 17h16"/>}
+  {name === 'close' && <path d="m6 6 12 12M18 6 6 18"/>}
+  {name === 'check' && <path d="m5 12 4 4L19 6"/>}
+</svg>
