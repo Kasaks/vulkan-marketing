@@ -39,10 +39,7 @@ const structuredData = {
     <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
     <script is:inline>
       document.documentElement.classList.add('js');
-      try {
-        const saved = localStorage.getItem('vulkan-theme');
-        document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      } catch { document.documentElement.dataset.theme = 'light'; }
+      document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     </script>
   </head>
   <body>
