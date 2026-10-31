@@ -89,14 +89,10 @@ document.querySelectorAll<HTMLDialogElement>('dialog').forEach(dialog => {
   });
   dialog.addEventListener('close', () => document.body.classList.toggle('modal-open', Boolean(document.querySelector('dialog[open]'))));
 });
-document.querySelectorAll<HTMLButtonElement>('[data-project-from-service]').forEach(trigger => trigger.addEventListener('click', () => {
-  trigger.closest('dialog')?.close();
-  openDialog('project-dialog');
-  const message = document.querySelector<HTMLTextAreaElement>('#project-form textarea');
-  if (message) message.value = `Интересует услуга «${trigger.dataset.projectFromService}». `;
-}));
-document.querySelector<HTMLFormElement>('#project-form')?.addEventListener('submit', event => {
-  event.preventDefault();
-  const status = document.querySelector<HTMLElement>('.form-status');
-  if (status) status.textContent = 'Форма работает. Это демонстрация: данные не отправлены. Подключим приём заявок после согласования контактов.';
-});
+document.querySelectorAll<HTMLButtonElement>('[data-contact-from-service]').forEach(b=>b.addEventListener('click',()=>{b.closest('dialog')?.close();openDialog('contact-dialog');}));
+const gallery=document.querySelector<HTMLDialogElement>('#gallery-dialog');let galleryImages:string[]=[];let galleryIndex=0;
+function showGallery(){const img=gallery?.querySelector('img');if(img)img.src=galleryImages[galleryIndex]||'';}
+document.querySelectorAll<HTMLButtonElement>('[data-gallery-open]').forEach(b=>b.addEventListener('click',()=>{galleryImages=Array.from(b.closest('.case-gallery')?.querySelectorAll('img')||[]).map(i=>i.src);galleryIndex=Number(b.dataset.imageIndex)||0;showGallery();openDialog('gallery-dialog');}));
+gallery?.querySelector('[data-gallery-prev]')?.addEventListener('click',()=>{galleryIndex=(galleryIndex-1+galleryImages.length)%galleryImages.length;showGallery();});
+gallery?.querySelector('[data-gallery-next]')?.addEventListener('click',()=>{galleryIndex=(galleryIndex+1)%galleryImages.length;showGallery();});
+gallery?.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();galleryIndex=(galleryIndex+(e.key==='ArrowRight'?1:-1)+galleryImages.length)%galleryImages.length;showGallery();}});
