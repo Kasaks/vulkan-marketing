@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 <BaseLayout noIndex title="Страница не найдена — Вулкан Маркетинг" description="Страница не найдена. Вернитесь на главную страницу агентства Вулкан Маркетинг.">
-  <main class="container section-space"><span class="eyebrow red">Ошибка 404</span><h1 style="font-size:clamp(48px,8vw,90px);margin:30px 0">Здесь пока пусто.</h1><p style="margin-bottom:30px">Возможно, адрес изменился. Начнём с главной?</p><a class="button" href="/">На главную →</a></main>
+  <SiteHeader />
+  <main id="main" class="container section-space"><span class="eyebrow red">Ошибка 404</span><h1 style="font-size:clamp(48px,8vw,90px);margin:30px 0">Здесь пока пусто.</h1><p style="margin-bottom:30px">Возможно, адрес изменился. Начнём с главной?</p><a class="button" href="/">На главную →</a></main>
+  <SiteFooter />
 </BaseLayout>

@@ -3,7 +3,7 @@ function syncTheme() {
   const dark = document.documentElement.dataset.theme === 'dark';
   themeButton?.setAttribute('aria-pressed', String(dark));
   themeButton?.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#0e2028' : '#fbfaf7');
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#101e25' : '#fcfaf8');
 }
 themeButton?.addEventListener('click', () => {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
@@ -34,7 +34,7 @@ document.addEventListener('keydown', event => {
 document.addEventListener('click', event => {
   if (event.target instanceof Node && !nav?.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
 });
-matchMedia('(min-width: 761px)').addEventListener('change', () => closeMenu());
+matchMedia('(min-width: 1051px)').addEventListener('change', () => closeMenu());
 
 document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
   const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));

@@ -1,0 +1,21 @@
+---
+import type { BlogArticle } from '../data/articles';
+import Icon from './Icon.astro';
+interface Props { article: BlogArticle; }
+const { article } = Astro.props;
+const cover = article.images[0];
+---
+<article class="article-card">
+  <a class="article-card-link" href={`/blog/${article.slug}/`} aria-label={`Открыть материал: ${article.title}`}>
+    <div class="article-card-cover">
+      {cover
+        ? <img src={cover} alt={`Первая фотография материала «${article.title}»`} width="720" height="460" loading="lazy" decoding="async" />
+        : <div class="article-cover-placeholder" role="img" aria-label="Фотография статьи пока не добавлена"><span class="placeholder-emblem" aria-hidden="true">ВМ</span><span>Фотография будет добавлена</span></div>}
+    </div>
+    <div class="article-card-body">
+      <span class="article-card-eyebrow">{article.status === 'preview' ? 'Анонс материала' : 'Статья'}</span>
+      <h3>{article.title}</h3>
+      <span class="article-card-action">{article.status === 'preview' ? 'Открыть анонс' : 'Читать статью'} <Icon name="arrow" size={19} /></span>
+    </div>
+  </a>
+</article>

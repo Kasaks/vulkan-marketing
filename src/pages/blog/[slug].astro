@@ -1,0 +1,59 @@
+---
+import type { BlogArticle } from '../../data/articles';
+import { articles, dzenChannelUrl } from '../../data/articles';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Icon from '../../components/Icon.astro';
+
+interface Props { article: BlogArticle; }
+export function getStaticPaths() {
+  return articles.map(article => ({ params: { slug: article.slug }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const cover = article.images[0];
+const isPreview = article.status === 'preview';
+const related = articles.filter(item => item.slug !== article.slug).slice(0, 2);
+---
+<BaseLayout title={`${article.title} — Блог Вулкан Маркетинг`} description={article.excerpt} noIndex={isPreview} image={cover} pageType={isPreview ? "website" : "article"} publishedTime={article.publishedAt}>
+  <SiteHeader active="blog" />
+  <main id="main" class="blog-article-page">
+    <div class="container">
+      <nav class="blog-breadcrumbs" aria-label="Навигационная цепочка"><a href="/">Главная</a><span aria-hidden="true">/</span><a href="/blog/">Блог</a><span aria-hidden="true">/</span><span aria-current="page">Материал</span></nav>
+      <article class="blog-article">
+        <header class="blog-article-header">
+          <p class="section-kicker"><span class="kicker-line"></span>{isPreview ? 'Анонс материала' : 'Статья · Вулкан Маркетинг'}</p>
+          <h1>{article.title}</h1>
+          <p class="blog-article-lead">{article.excerpt}</p>
+          {article.publishedAt && !isPreview && <time datetime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' })}</time>}
+        </header>
+        <div class="blog-article-cover">
+          {cover
+            ? <img src={cover} alt={`Первая фотография материала «${article.title}»`} width="1280" height="760" />
+            : <div class="article-cover-placeholder" role="img" aria-label="Исходная фотография статьи пока не добавлена"><span class="placeholder-emblem" aria-hidden="true">ВМ</span><span>Оригинальная фотография ожидается</span></div>}
+        </div>
+        <div class="blog-article-content">
+          {isPreview ? <aside class="blog-preview-note"><strong>Это анонс, а не полная статья.</strong><p>Исходный текст и фотографии с Дзена пока не удалось получить. Ниже — доступные фрагменты авторского анонса.</p></aside> : null}
+          {isPreview
+            ? article.previewParagraphs.map(paragraph => <p>{paragraph}</p>)
+            : article.sections.map(section => <section class="blog-text-section">
+                {section.heading && <h2>{section.heading}</h2>}
+                {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
+                {section.images?.map((src, i) => <figure><img src={src} alt={`Иллюстрация к статье «${article.title}», ${i + 1}`} loading="lazy" decoding="async" /></figure>)}
+              </section>)}
+          <div class="blog-source-link">
+            <p>{isPreview ? 'Оригинальная публикация доступна на канале автора.' : 'Материал также опубликован на Дзене.'}</p>
+            <a href={article.originalUrl || dzenChannelUrl} target="_blank" rel="noopener noreferrer">{isPreview ? 'Открыть канал на Дзене' : 'Открыть оригинал на Дзене'} <Icon name="arrow" size={20} /></a>
+          </div>
+        </div>
+      </article>
+      <div class="blog-related">
+        <div class="blog-related-header"><h2>Ещё материалы</h2><a href="/blog/">Все статьи <Icon name="arrow" size={19} /></a></div>
+        <div class="blog-cards-grid">{related.map(item => <ArticleCard article={item} />)}</div>
+      </div>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>

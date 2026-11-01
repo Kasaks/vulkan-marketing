@@ -1,29 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { latestArticles } from '../data/articles';
 import { hero, services, servicesIntro, cases, caseIntro, metrics, benefits, steps, processIntro, contactIntro, contacts, reviewSources } from '../data/site';
-const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем'], ['#services', 'Услуги'], ['#reviews', 'Отзывы'], ['#contact', 'Контакты']];
+const blogCards = latestArticles(3);
 ---
 <BaseLayout>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="/" aria-label="Вулкан Маркетинг — на главную">
-        <img src="/images/logo.jpg" alt="" width="64" height="64" />
-        <span class="brand-copy"><strong>Вулкан Маркетинг</strong><small>Маркетинговое агентство</small></span>
-      </a>
-      <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
-        {links.map(([href, label]) => <a href={href}>{label}</a>)}
-      </nav>
-      <div class="header-actions">
-        <button class="theme-toggle" type="button" aria-label="Переключить тему">
-          <span class="sun"><Icon name="sun" size={18} /></span><span class="moon"><Icon name="moon" size={18} /></span>
-        </button>
-        <a class="button button-primary header-cta" href="#contact-dialog" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={20} /></a>
-        <button class="menu-toggle icon-button" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="main-nav"><Icon name="menu" /></button>
-      </div>
-    </div>
-  </header>
-
+  <SiteHeader />
   <main id="main">
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-shell">
@@ -107,10 +93,21 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
 
     <section class="reviews-section section-space" id="reviews"><div class="container reviews-layout"><div><p class="section-kicker"><span class="kicker-line"></span>Отзывы</p><h2>Отзывы</h2></div><div class="review-sources">{reviewSources.map(s => s.url ? <a class="review-source" href={s.url} target="_blank" rel="noopener noreferrer"><strong>{s.name}</strong><Icon name="arrow" size={22} /></a> : <div class="review-source pending"><strong>{s.name}</strong><small>Ссылка ожидается</small></div>)}</div></div></section>
 
+
+    <section class="blog-preview section-space" id="blog" aria-labelledby="home-blog-heading">
+      <div class="container">
+        <div class="section-heading blog-preview-heading">
+          <div><p class="section-kicker"><span class="kicker-line"></span>Блог</p><h2 id="home-blog-heading">Статьи<br /><em>об Авито</em></h2></div>
+          <div class="blog-preview-intro"><p>Материалы о продвижении, аналитике и продажах на Авито.</p><a href="/blog/" class="blog-all-link">Все статьи <Icon name="arrow" size={20} /></a></div>
+        </div>
+        <div class="blog-cards-grid">{blogCards.map(article => <ArticleCard article={article} />)}</div>
+      </div>
+    </section>
+
     <section class="contact-section" id="contact"><div class="container contact-content"><div><p class="section-kicker"><span class="kicker-line"></span>Контакты</p><h2>Чем мы можем быть<br /><span>вам полезны?</span></h2><p>{contactIntro}</p><div class="direct-contacts">{contacts.map(c => c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer">{c.name} <Icon name="arrow" size={16} /></a> : <span>{c.name}</span>)}</div></div><button class="button contact-button" type="button" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={24} /></button></div></section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><a href="/">Вулкан Маркетинг</a><p>Ваш отдел маркетинга на Авито</p></div><nav aria-label="Навигация в подвале"><a href="#main">В начало</a>{links.map(([href, label]) => <a href={href}>{label}</a>)}</nav><p class="footer-note">© {new Date().getFullYear()} Вулкан Маркетинг</p></div></footer>
+  <SiteFooter />
 
   {services.map(s => <dialog id={`${s.id}-details`} class="detail-dialog"><div class="dialog-inner"><button class="dialog-close icon-button" type="button" data-close aria-label="Закрыть"><Icon name="close" /></button><span class="section-kicker">Услуги</span><h2>{s.title}</h2>
     <div class="service-detail-paragraphs">{s.detailParagraphs.map(text => <p>{text}</p>)}</div>
@@ -119,7 +116,5 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
     {s.term && <p class="service-detail-meta"><strong>Срок:</strong> {s.term}</p>}
     {s.budget && <p class="service-detail-meta"><strong>Рекламный бюджет:</strong> {s.budget}</p>}
     <button class="button button-primary" type="button" data-contact-from-service>Обсудить задачу <Icon name="arrow" size={18} /></button></div></dialog>)}
-  <dialog id="contact-dialog" class="project-dialog" aria-labelledby="contact-dialog-title"><div class="dialog-inner"><button class="dialog-close icon-button" type="button" data-close aria-label="Закрыть"><Icon name="close" /></button><span class="section-kicker">Связаться с нами</span><h2 id="contact-dialog-title">Обсудить задачу</h2><p>{contactIntro}</p><div class="contact-links">{contacts.map(c => c.url ? <a class="button button-primary" href={c.url} target="_blank" rel="noopener noreferrer">{c.name} <Icon name="arrow" size={18} /></a> : <span class="contact-pending">{c.name} · ссылка пока не добавлена</span>)}</div></div></dialog>
   <dialog id="gallery-dialog" class="gallery-dialog" aria-label="Просмотр изображений"><button type="button" data-close aria-label="Закрыть галерею">×</button><button type="button" data-gallery-prev aria-label="Предыдущее изображение">←</button><img alt="Увеличенный скриншот кейса" /><button type="button" data-gallery-next aria-label="Следующее изображение">→</button></dialog>
-  <script src="../scripts/site.ts"></script>
 </BaseLayout>
