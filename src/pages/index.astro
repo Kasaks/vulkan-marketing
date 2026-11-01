@@ -73,10 +73,10 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
 
     <section class="services section-space" id="services">
       <div class="container">
-        <div class="section-heading"><div><p class="section-kicker"><span class="kicker-line"></span>01 / Услуги</p><h2>Стандартные<br /><em>форматы сотрудничества</em></h2></div><p class="section-lead">{servicesIntro}</p></div>
+        <div class="section-heading"><div><p class="section-kicker"><span class="kicker-line"></span>Услуги</p><h2>Стандартные<br /><em>форматы сотрудничества</em></h2></div><p class="section-lead">{servicesIntro}</p></div>
         <div class="service-grid">
-          {services.map((s, i) => <article class="service-card">
-            <div class="service-card-top"><span class="service-number">0{i + 1} / 03</span><span class="service-icon"><Icon name={s.icon} size={31} /></span></div>
+          {services.map(s => <article class="service-card">
+            <div class="service-card-top"><span class="service-icon"><Icon name={s.icon} size={31} /></span></div>
             <h3>{s.title}</h3>
             <p>{s.description}</p>
             <div class="service-card-bottom"><span class="service-price"><strong>{s.price}</strong>{s.unit && <small>{s.unit}</small>}</span><a class="service-more" href={`#${s.id}-details`} data-dialog-open={`${s.id}-details`} aria-label={`Подробнее об услуге ${s.title}`}><Icon name="arrow" size={23} /></a></div>
@@ -87,25 +87,25 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
 
     <section class="case-section section-space" id="cases">
       <div class="container">
-        <div class="section-heading case-heading"><div><p class="section-kicker"><span class="kicker-line"></span>02 / Кейсы</p><h2>Кейсы</h2></div><p class="section-lead">{caseIntro}</p></div>
+        <div class="section-heading case-heading"><div><p class="section-kicker"><span class="kicker-line"></span>Кейсы</p><h2>Кейсы</h2></div><p class="section-lead">{caseIntro}</p></div>
         <div class="case-panel carousel" data-carousel="cases" tabindex="0">
           {cases.map((c, i) => <article class="case-slide" data-slide data-active={i === 0 ? 'true' : 'false'}>
-            <div class="case-copy"><span class="case-label">Кейс / {String(i + 1).padStart(2, '0')}</span><h3>{c.title}</h3><p class="case-description">{c.description}</p><p class="case-description">{c.niche}</p>
+            <div class="case-copy"><h3>{c.title}</h3><p class="case-description">{c.description}</p><p class="case-description">{c.niche}</p>
             </div>
             <div class="case-visual">
               {c.images.length ? <div class="case-gallery">{c.images.map((src, j) => <button type="button" class="gallery-thumb" data-gallery-open data-image-index={j} aria-label={`Увеличить изображение ${j + 1}`}><img src={src} alt={`Материал кейса ${j + 1}`} loading="lazy" /></button>)}</div> : <div class="case-placeholder"><div class="placeholder-window"><div class="placeholder-top"><span></span><span></span><span></span><b>Материалы проекта</b></div><div class="placeholder-bars"><i></i><i></i><i></i><i></i><i></i></div><div class="placeholder-row"><i></i><span></span><span></span></div><div class="placeholder-row"><i></i><span></span><span></span></div></div><p>Скриншоты статистики добавим после получения материалов.</p></div>}
             </div>
           </article>)}
-          <div class="carousel-controls case-controls"><button class="round-button previous" type="button" data-prev aria-label="Предыдущий кейс"><Icon name="arrow" /></button><button class="round-button accent" type="button" data-next aria-label="Следующий кейс"><Icon name="arrow" /></button><span class="carousel-count" data-count></span></div>
+          {cases.length > 1 && <div class="carousel-controls case-controls"><button class="round-button previous" type="button" data-prev aria-label="Предыдущий кейс"><Icon name="arrow" /></button><button class="round-button accent" type="button" data-next aria-label="Следующий кейс"><Icon name="arrow" /></button></div>}
         </div>
       </div>
     </section>
 
-    <section class="benefits section-space" id="approach"><div class="container benefits-grid"><div class="benefits-heading"><p class="section-kicker"><span class="kicker-line"></span>03 / Преимущества</p><h2>Понятно -<br />что делаем.<br /><em>Видно - зачем.</em></h2></div><div class="benefit-list">{benefits.map(([title, description], i) => <article class="benefit-item"><span>0{i + 1}</span><div><h3>{title}</h3><p>{description}</p></div><span class="benefit-arrow">↗</span></article>)}</div></div></section>
+    <section class="benefits section-space" id="approach"><div class="container benefits-grid"><div class="benefits-heading"><p class="section-kicker"><span class="kicker-line"></span>Преимущества</p><h2>Понятно -<br />что делаем.<br /><em>Видно - зачем.</em></h2></div><div class="benefit-list">{benefits.map(([title, description]) => <article class="benefit-item"><div><h3>{title}</h3><p>{description}</p></div><span class="benefit-arrow">↗</span></article>)}</div></div></section>
 
-    <section class="process section-space" id="process"><div class="container"><div class="section-heading"><div><p class="section-kicker"><span class="kicker-line"></span>04 / Порядок работы</p><h2>От первого разговора<br /><em>до эффективной рекламы</em></h2></div><p class="section-lead">{processIntro}</p></div><ol class="steps">{steps.map(([title, description], i) => <li><span class="step-number">{String(i + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{description}</p></li>)}</ol></div></section>
+    <section class="process section-space" id="process"><div class="container"><div class="section-heading"><div><p class="section-kicker"><span class="kicker-line"></span>Порядок работы</p><h2>От первого разговора<br /><em>до эффективной рекламы</em></h2></div><p class="section-lead">{processIntro}</p></div><ol class="steps">{steps.map(([title, description]) => <li><h3>{title}</h3><p>{description}</p></li>)}</ol></div></section>
 
-    <section class="reviews-section section-space" id="reviews"><div class="container reviews-layout"><div><p class="section-kicker"><span class="kicker-line"></span>05 / Отзывы</p><h2>Отзывы</h2></div><div class="review-sources">{reviewSources.map((s, i) => s.url ? <a class="review-source" href={s.url} target="_blank" rel="noopener noreferrer"><span class="review-source-number">0{i + 1}</span><strong>{s.name}</strong><Icon name="arrow" size={22} /></a> : <div class="review-source pending"><span class="review-source-number">0{i + 1}</span><strong>{s.name}</strong><small>Ссылка ожидается</small></div>)}</div></div></section>
+    <section class="reviews-section section-space" id="reviews"><div class="container reviews-layout"><div><p class="section-kicker"><span class="kicker-line"></span>Отзывы</p><h2>Отзывы</h2></div><div class="review-sources">{reviewSources.map(s => s.url ? <a class="review-source" href={s.url} target="_blank" rel="noopener noreferrer"><strong>{s.name}</strong><Icon name="arrow" size={22} /></a> : <div class="review-source pending"><strong>{s.name}</strong><small>Ссылка ожидается</small></div>)}</div></div></section>
 
     <section class="contact-section" id="contact"><div class="container contact-content"><div><p class="section-kicker"><span class="kicker-line"></span>Контакты</p><h2>Чем мы можем быть<br /><span>вам полезны?</span></h2><p>{contactIntro}</p><div class="direct-contacts">{contacts.map(c => c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer">{c.name} <Icon name="arrow" size={16} /></a> : <span>{c.name}</span>)}</div></div><button class="button contact-button" type="button" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={24} /></button></div></section>
   </main>
