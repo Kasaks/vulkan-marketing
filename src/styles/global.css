@@ -454,3 +454,37 @@ body.modal-open{overflow:hidden}
   .metric-heading .metric-icon{width:30px;height:30px;flex-basis:30px}
   .metric-heading .metric-label{font-size:12px}
 }
+
+
+/* Editorial section heading: description follows title, not container edge */
+.section-heading{
+  justify-content:flex-start;
+  align-items:center;
+  gap:clamp(28px,3.5vw,56px);
+}
+.section-heading>div:first-child{
+  flex:0 1 max-content;
+  min-width:0;
+  max-width:min(620px,58%);
+}
+.section-heading>.section-lead{
+  flex:0 1 480px;
+  max-width:480px;
+  margin-inline:0;
+  padding-bottom:0;
+}
+.services .section-heading{align-items:center}
+.case-heading>.section-lead{
+  flex-basis:520px;
+  max-width:520px;
+}
+@media(max-width:1050px){
+  .section-heading{gap:30px}
+  .section-heading>div:first-child{max-width:55%}
+  .section-heading>.section-lead{flex:1 1 0;max-width:45%}
+}
+@media(max-width:760px){
+  .section-heading{display:block}
+  .section-heading>div:first-child{max-width:100%}
+  .section-heading>.section-lead{max-width:100%;margin-top:23px}
+}
