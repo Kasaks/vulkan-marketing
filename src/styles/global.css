@@ -431,3 +431,26 @@ body.modal-open{overflow:hidden}
 .metric-tile>strong{font-size:28px}
 .metric-label{font-size:10px}
 }
+
+/* Metric tiles: larger labels alongside icons, figures below */
+.metric-tile{align-items:stretch;min-height:196px}
+.metric-heading{display:flex;align-items:flex-start;gap:14px;min-height:75px}
+.metric-heading .metric-icon{width:40px;height:40px;flex:0 0 40px;margin:0}
+.metric-heading .metric-label{color:var(--ink);font-size:16px;font-weight:700;line-height:1.35;margin:0}
+.metric-tile>strong{margin-top:auto;padding-top:18px}
+@media(max-width:1050px){
+  .metric-heading{gap:10px;min-height:95px}
+  .metric-heading .metric-label{font-size:14px;line-height:1.3}
+}
+@media(max-width:760px){
+  .metric-tile{min-height:196px}
+  .metric-heading{gap:9px;min-height:110px}
+  .metric-heading .metric-icon{width:36px;height:36px;flex-basis:36px}
+  .metric-heading .metric-label{font-size:13px;line-height:1.25}
+}
+@media(max-width:370px){
+  .metric-tile{min-height:196px}
+  .metric-heading{gap:7px;min-height:115px}
+  .metric-heading .metric-icon{width:30px;height:30px;flex-basis:30px}
+  .metric-heading .metric-label{font-size:12px}
+}

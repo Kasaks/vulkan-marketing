@@ -53,7 +53,7 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
             <div class="laptop-bottom"></div>
           </div>
           <div class="float-card card-one"><span class="float-icon"><Icon name="chart" size={25} /></span><strong>Улучшаем сильное</strong></div>
-          <div class="float-card card-two"><span class="float-icon"><Icon name="target" size={27} /></span><strong>избавляемся<br />от слабого</strong></div>
+          <div class="float-card card-two"><span class="float-icon"><Icon name="target" size={27} /></span><strong>Избавляемся<br />от слабого</strong></div>
           <div class="float-card card-three"><span class="float-icon float-layers" aria-hidden="true">◇</span><strong>Делаем результат<br />понятнее</strong></div>
         </div>
       </div>
@@ -62,9 +62,11 @@ const links = [['#cases', 'Кейсы'], ['#process', 'Как работаем']
     <section class="metrics-section" aria-label="Показатели агентства">
       <div class="container metrics-grid">
         {metrics.map(m => <div class="metric-tile">
-          <span class="metric-icon"><Icon name={m.icon} size={27} /></span>
+          <div class="metric-heading">
+            <span class="metric-icon"><Icon name={m.icon} size={27} /></span>
+            <span class="metric-label">{m.label}</span>
+          </div>
           <strong>{m.number}</strong>
-          <span class="metric-label">{m.label}</span>
         </div>)}
       </div>
     </section>
