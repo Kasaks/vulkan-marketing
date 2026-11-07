@@ -8,7 +8,6 @@ import volcanoMascot from '../assets/volcano-mascot.png';
 <section class="hero hero--mascot" aria-labelledby="hero-title">
   <div class="container hero-layout">
     <div class="hero-heading">
-      <p class="hero-tag"><span class="tag-dot"></span>{hero.eyebrow}</p>
       <h1 id="hero-title">Ваш отдел<br />маркетинга<br /><span>на Авито</span></h1>
     </div>
 
@@ -33,12 +32,9 @@ import volcanoMascot from '../assets/volcano-mascot.png';
     </div>
 
     <div class="hero-details">
-      <p class="hero-description">{hero.description}</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="#contact-dialog" data-dialog-open="contact-dialog">{hero.primary} <Icon name="arrow" size={21} /></a>
         <a class="button button-outline" href="#cases">{hero.secondary} <Icon name="arrow" size={20} /></a>
       </div>
-      <p class="hero-caption">{hero.caption}</p>
     </div>
   </div>
 </section>
@@ -55,9 +51,9 @@ import volcanoMascot from '../assets/volcano-mascot.png';
     min-height: 755px;
   }
 
-  .hero-heading { grid-area: heading; min-width: 0; }
-  .hero-details { grid-area: details; min-width: 0; }
-  .hero-description { margin-top: 0; }
+  .hero-heading { grid-area: heading; min-width: 0; align-self: end; }
+  .hero-details { grid-area: details; min-width: 0; align-self: start; }
+  .hero-actions { margin-top: 0; }
 
   .hero-department {
     grid-area: department;
@@ -177,9 +173,6 @@ import volcanoMascot from '../assets/volcano-mascot.png';
     .task-marker { width: 18px; height: 18px; }
     .task-marker :global(svg) { width: 12px; height: 12px; }
     .department-mascot { width: calc(100% + 18px); margin-left: -18px; }
-    .hero-description { margin-top: 0; }
-    .hero-actions { margin-top: 25px; }
-    .hero-caption { margin-top: 16px; }
   }
 
   @media (max-width: 370px) {

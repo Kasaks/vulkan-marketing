@@ -16,7 +16,7 @@ const navLinks = [
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="Вулкан Маркетинг — на главную">
       <img src="/images/logo.jpg" alt="" width="64" height="64" />
-      <span class="brand-copy"><strong>Вулкан Маркетинг</strong><small>Маркетинговое агентство</small></span>
+      <span class="brand-copy"><strong>Вулкан Маркетинг</strong></span>
     </a>
     <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
       {navLinks.map(link => <a href={link.href} aria-current={active === 'blog' && link.href === '/blog/' ? 'page' : undefined}>{link.label}</a>)}
