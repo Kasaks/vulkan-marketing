@@ -1,0 +1,188 @@
+---
+import Icon from './Icon.astro';
+import { workCycle } from '../data/site';
+---
+
+<section class="marketing-cycle" id="work-cycle" aria-labelledby="work-cycle-title">
+  <div class="container">
+    <div class="cycle-heading">
+      <h2 id="work-cycle-title">Работаем по циклу<br /><em>который выполняет задачи</em></h2>
+    </div>
+
+    <div class="cycle-diagram">
+      <svg class="cycle-track" viewBox="40 40 520 520" fill="none" aria-hidden="true" focusable="false">
+        <defs>
+          <marker id="work-cycle-arrow" viewBox="0 0 12 12" refX="6" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="m2 2 6 4-6 4" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </marker>
+        </defs>
+        {[0, 90, 180, 270].map(rotation => (
+          <path
+            class="cycle-arc"
+            d="M300 50 A250 250 0 0 1 476.7767 123.2233 A250 250 0 0 1 550 300"
+            transform={`rotate(${rotation} 300 300)`}
+            marker-mid="url(#work-cycle-arrow)"
+          />
+        ))}
+      </svg>
+
+      <div class="cycle-center" aria-hidden="true">
+        <Icon name="repeat" size={42} />
+        <span>Повторяем<br />цикл</span>
+      </div>
+
+      <ol class="cycle-steps" role="list" aria-label="Этапы работы по часовой стрелке">
+        {workCycle.map((stage, index) => (
+          <li class={`cycle-step cycle-step--${index + 1}`}>
+            <h3>{stage.title}</h3>
+            <p>{stage.description}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .marketing-cycle {
+    padding-block: 98px 108px;
+    background: var(--soft);
+    border-block: 1px solid var(--line);
+  }
+
+  .cycle-heading {
+    max-width: 1080px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .cycle-heading h2 {
+    font-size: clamp(36px, 4.35vw, 66px);
+    line-height: 1.12;
+    letter-spacing: -.055em;
+    text-wrap: balance;
+  }
+
+  .cycle-heading em { color: var(--accent); font-style: normal; }
+
+  .cycle-diagram {
+    position: relative;
+    isolation: isolate;
+    max-width: 1080px;
+    min-height: 650px;
+    margin: 64px auto 0;
+  }
+
+  .cycle-track {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: auto;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .cycle-arc { stroke: var(--accent); stroke-width: 2.5; stroke-opacity: .55; }
+
+  .cycle-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 17px;
+    width: 184px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    box-shadow: 0 18px 40px #12242e12;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .cycle-center :global(svg) { color: var(--accent); }
+  .cycle-center span { font-size: 21px; font-weight: 700; line-height: 1.25; letter-spacing: -.025em; }
+
+  .cycle-steps { position: relative; min-height: inherit; margin: 0; padding: 0; list-style: none; }
+
+  .cycle-step {
+    position: absolute;
+    width: min(30%, 320px);
+    padding: 26px 24px 28px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--paper);
+    box-shadow: 0 12px 32px #12242e06;
+    text-align: center;
+  }
+
+  .cycle-step h3 {
+    color: var(--ink);
+    font-size: clamp(21px, 2vw, 28px);
+    line-height: 1.2;
+    letter-spacing: -.04em;
+    overflow-wrap: anywhere;
+  }
+
+  .cycle-step p {
+    max-width: 22ch;
+    margin: 12px auto 0;
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  .cycle-step--1 { top: 0; left: 50%; transform: translateX(-50%); }
+  .cycle-step--2 { top: 50%; right: 0; transform: translateY(-50%); }
+  .cycle-step--3 { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .cycle-step--4 { top: 50%; left: 0; transform: translateY(-50%); }
+
+  @media (max-width: 1150px) {
+    .cycle-diagram { min-height: 620px; }
+    .cycle-track { width: 560px; }
+    .cycle-center { width: 164px; }
+    .cycle-step { padding: 24px 18px; }
+    .cycle-step h3 { font-size: 23px; }
+    .cycle-step p { font-size: 16px; }
+  }
+
+  @media (max-width: 900px) {
+    .marketing-cycle { padding-block: 72px 78px; }
+    .cycle-heading h2 { font-size: clamp(34px, 5.3vw, 48px); }
+    .cycle-diagram { max-width: 540px; min-height: clamp(490px, 142vw, 600px); margin-top: 48px; }
+    .cycle-track { width: calc(100% - 8px); }
+    .cycle-step { width: calc(50% - 20px); padding: 18px 14px 20px; border-radius: 19px; }
+    .cycle-step--1, .cycle-step--3 { width: min(270px, 78%); }
+    .cycle-step h3 { font-size: clamp(17px, 4.6vw, 22px); }
+    .cycle-step p { margin-top: 10px; font-size: 14px; }
+    .cycle-center { width: 36px; gap: 0; background: transparent; box-shadow: none; }
+    .cycle-center span { display: none; }
+    .cycle-center :global(svg) { width: 32px; height: 32px; }
+  }
+
+  @media (max-width: 370px) {
+    .marketing-cycle { padding-block: 56px 60px; }
+    .cycle-heading h2 { font-size: 32px; }
+    .cycle-diagram { margin-top: 38px; }
+    .cycle-step { width: calc(50% - 5px); padding: 14px 8px 16px; border-radius: 16px; }
+    .cycle-step--1, .cycle-step--3 { width: 78%; }
+    .cycle-step h3 { font-size: 16px; letter-spacing: -.045em; }
+    .cycle-step p { margin-top: 8px; font-size: 14px; }
+    .cycle-center { display: none; }
+  }
+
+  @media print {
+    .marketing-cycle { padding-block: 35px; break-inside: avoid; }
+    .cycle-diagram { min-height: 600px; margin-top: 30px; }
+    .cycle-track { width: 560px; }
+    .cycle-step { width: 30%; padding: 18px 14px; }
+    .cycle-step h3 { font-size: 20px; }
+    .cycle-step p { font-size: 14px; }
+  }
+</style>

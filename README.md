@@ -24,6 +24,7 @@ npm run dev
 | `src/data/site.ts` | Название, метаданные, услуги, цены, кейсы, преимущества, этапы и места для отзывов |
 | `src/pages/index.astro` | Структура главной страницы и подключение разделов |
 | `src/components/Hero.astro` | Первый экран: заголовок, вулканчик, задачи отдела и мобильная композиция |
+| `src/components/MarketingCycle.astro` | Круговой цикл работы из четырёх этапов после первого экрана |
 | `src/assets/volcano-mascot.png` | Согласованный персонаж агентства на прозрачном фоне |
 | `src/styles/global.css` | Цвета, типографика, мобильная версия, светлая и тёмная темы |
 | `src/layouts/BaseLayout.astro` | Общий HTML, метатеги, canonical и JSON-LD |
