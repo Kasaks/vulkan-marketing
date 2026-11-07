@@ -1,0 +1,200 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { hero } from '../data/site';
+import volcanoMascot from '../assets/volcano-mascot.png';
+---
+
+<section class="hero hero--mascot" aria-labelledby="hero-title">
+  <div class="container hero-layout">
+    <div class="hero-heading">
+      <p class="hero-tag"><span class="tag-dot"></span>{hero.eyebrow}</p>
+      <h1 id="hero-title">Ваш отдел<br />маркетинга<br /><span>на Авито</span></h1>
+    </div>
+
+    <div class="hero-department" aria-labelledby="department-title">
+      <div class="department-board">
+        <h2 id="department-title">{hero.tasksTitle}</h2>
+        <ul class="department-tasks">
+          {hero.tasks.map(task => <li><span class="task-marker" aria-hidden="true"><Icon name="check" size={18} /></span><span>{task}</span></li>)}
+        </ul>
+      </div>
+      <Image
+        class="department-mascot"
+        src={volcanoMascot}
+        alt="Вулканчик — персонаж агентства — указывает на задачи отдела маркетинга."
+        width={640}
+        widths={[192, 256, 320, 480, 640, 768]}
+        sizes="(max-width: 760px) 44vw, (max-width: 1050px) 24vw, 340px"
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+
+    <div class="hero-details">
+      <p class="hero-description">{hero.description}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="#contact-dialog" data-dialog-open="contact-dialog">{hero.primary} <Icon name="arrow" size={21} /></a>
+        <a class="button button-outline" href="#cases">{hero.secondary} <Icon name="arrow" size={20} /></a>
+      </div>
+      <p class="hero-caption">{hero.caption}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+    grid-template-areas: 'heading department' 'details department';
+    column-gap: 36px;
+    row-gap: 27px;
+    align-content: center;
+    padding-block: 68px 74px;
+    min-height: 755px;
+  }
+
+  .hero-heading { grid-area: heading; min-width: 0; }
+  .hero-details { grid-area: details; min-width: 0; }
+  .hero-description { margin-top: 0; }
+
+  .hero-department {
+    grid-area: department;
+    display: grid;
+    grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
+    grid-template-areas: 'mascot board';
+    align-items: center;
+    position: relative;
+    align-self: center;
+    min-width: 0;
+    min-height: 520px;
+    isolation: isolate;
+  }
+
+  .hero-department::before {
+    content: '';
+    position: absolute;
+    inset: 12% -20px 0 -30px;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, #f0384815, transparent 68%);
+  }
+
+  .department-board {
+    grid-area: board;
+    position: relative;
+    min-width: 0;
+    padding: 28px 24px 30px;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: var(--paper);
+    box-shadow: 0 20px 60px #12242e08;
+  }
+
+  .department-board h2 {
+    font-size: clamp(25px, 2.1vw, 32px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.045em;
+  }
+
+  .department-tasks {
+    display: grid;
+    gap: 21px;
+    list-style: none;
+    margin-top: 26px;
+  }
+
+  .department-tasks li {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    font-size: clamp(17px, 1.4vw, 22px);
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -.025em;
+    color: var(--ink);
+  }
+
+  .task-marker {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .department-mascot {
+    grid-area: mascot;
+    position: relative;
+    z-index: 1;
+    width: calc(100% + 24px);
+    max-width: none;
+    height: auto;
+    margin-left: -24px;
+    filter: drop-shadow(0 14px 18px #12242e14);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 1350px) {
+    .hero-layout { min-height: 715px; column-gap: 26px; }
+    .hero-department { min-height: 480px; }
+    .department-board { padding: 25px 20px 28px; }
+    .department-tasks { gap: 18px; }
+  }
+
+  @media (max-width: 1050px) {
+    .hero-layout { padding-top: 58px; min-height: 700px; column-gap: 22px; }
+    .hero-department { min-height: 420px; }
+    .department-board { padding: 23px 16px 25px; border-radius: 23px; }
+    .department-board h2 { font-size: 25px; }
+    .department-tasks { gap: 16px; margin-top: 22px; }
+    .department-tasks li { font-size: 16px; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; }
+    .task-marker { width: 20px; height: 20px; margin-top: 1px; }
+    .task-marker :global(svg) { width: 14px; height: 14px; }
+    .department-mascot { width: calc(100% + 20px); margin-left: -20px; }
+  }
+
+  @media (max-width: 760px) {
+    .hero-layout {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: 'heading' 'department' 'details';
+      row-gap: 24px;
+      padding-block: 36px 38px;
+      min-height: 0;
+    }
+    .hero-department { min-height: 0; width: min(100%, 460px); margin-inline: auto; }
+    .department-board { padding: 21px 16px 23px; border-radius: 21px; }
+    .department-board h2 { font-size: clamp(20px, 5vw, 27px); }
+    .department-tasks { gap: 15px; margin-top: 19px; }
+    .department-tasks li { font-size: clamp(14px, 3.7vw, 17px); line-height: 1.45; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; }
+    .task-marker { width: 18px; height: 18px; }
+    .task-marker :global(svg) { width: 12px; height: 12px; }
+    .department-mascot { width: calc(100% + 18px); margin-left: -18px; }
+    .hero-description { margin-top: 0; }
+    .hero-actions { margin-top: 25px; }
+    .hero-caption { margin-top: 16px; }
+  }
+
+  @media (max-width: 370px) {
+    .hero-department { grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr); }
+    .department-board { padding: 18px 12px 20px; }
+    .department-board h2 { font-size: 20px; }
+    .department-tasks { gap: 13px; margin-top: 17px; }
+    .department-tasks li { font-size: 13px; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; }
+    .task-marker { width: 16px; height: 16px; }
+  }
+
+  @media print {
+    .hero-layout { display: block; min-height: 0; padding-block: 20px; }
+    .hero-department { display: block; min-height: 0; margin-block: 20px; }
+    .department-board { margin: 0; box-shadow: none; }
+    .department-mascot { display: none; }
+  }
+</style>

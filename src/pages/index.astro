@@ -1,49 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import Icon from '../components/Icon.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { latestArticles } from '../data/articles';
-import { hero, services, servicesIntro, cases, caseIntro, metrics, benefits, steps, processIntro, contactIntro, contacts, reviewSources } from '../data/site';
+import { services, servicesIntro, cases, caseIntro, metrics, benefits, steps, processIntro, contactIntro, contacts, reviewSources } from '../data/site';
 const blogCards = latestArticles(3);
 ---
 <BaseLayout>
   <SiteHeader />
   <main id="main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-shell">
-        <div class="hero-copy">
-          <p class="hero-tag"><span class="tag-dot"></span>{hero.eyebrow}</p>
-          <h1 id="hero-title">Ваш отдел<br />маркетинга<br /><span>на Авито</span></h1>
-          <p class="hero-description">{hero.description}</p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="#contact-dialog" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={21} /></a>
-            <a class="button button-outline" href="#cases">{hero.secondary} <Icon name="arrow" size={20} /></a>
-          </div>
-          <p class="hero-caption">{hero.caption}</p>
-        </div>
-        <div class="hero-art" aria-label="Декоративная иллюстрация ноутбука с демонстрационным интерфейсом объявлений">
-          <div class="coral-shape" aria-hidden="true"></div>
-          <div class="lava-shape" aria-hidden="true"></div>
-          <div class="hero-laptop" aria-hidden="true">
-            <div class="laptop-lid">
-              <div class="laptop-screen-content">
-                <div class="mock-header"><strong><span class="avito-dots"><i></i><i></i><i></i><i></i></span> авито</strong><span class="mock-search"></span><span class="mock-search-btn"></span></div>
-                <div class="mock-toolbar"><span></span><span></span><span></span></div>
-                <div class="mock-listing"><div class="mock-photo photo-one"><span></span></div><div class="mock-lines"><i></i><i></i><i></i><b></b></div></div>
-                <div class="mock-listing"><div class="mock-photo photo-two"><span></span></div><div class="mock-lines"><i></i><i></i><i></i><b></b></div></div>
-                <div class="mock-listing"><div class="mock-photo photo-three"><span></span></div><div class="mock-lines"><i></i><i></i><i></i><b></b></div></div>
-              </div>
-            </div>
-            <div class="laptop-bottom"></div>
-          </div>
-          <div class="float-card card-one"><span class="float-icon"><Icon name="chart" size={25} /></span><strong>Улучшаем сильное</strong></div>
-          <div class="float-card card-two"><span class="float-icon"><Icon name="target" size={27} /></span><strong>Избавляемся<br />от слабого</strong></div>
-          <div class="float-card card-three"><span class="float-icon float-layers" aria-hidden="true">◇</span><strong>Делаем результат<br />понятнее</strong></div>
-        </div>
-      </div>
-    </section>
+    <Hero />
 
     <section class="metrics-section" aria-label="Показатели агентства">
       <div class="container metrics-grid">
