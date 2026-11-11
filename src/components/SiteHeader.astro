@@ -1,16 +1,9 @@
 ---
 import Icon from './Icon.astro';
-import { contacts, contactIntro } from '../data/site';
+import { contacts, contactIntro, navigation, navigationHref } from '../data/site';
 interface Props { active?: 'home' | 'blog'; }
 const { active = 'home' } = Astro.props;
-const navLinks = [
-  { href: '/#cases', label: 'Кейсы' },
-  { href: '/#process', label: 'Как работаем' },
-  { href: '/#services', label: 'Услуги' },
-  { href: '/blog/', label: 'Блог' },
-  { href: '/#reviews', label: 'Отзывы' },
-  { href: '/#contact', label: 'Контакты' },
-];
+const contactHref = navigationHref('contact', Astro.url.pathname);
 ---
 <header class="site-header">
   <div class="container header-inner">
@@ -19,11 +12,11 @@ const navLinks = [
       <span class="brand-copy"><strong>Вулкан Маркетинг</strong></span>
     </a>
     <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
-      {navLinks.map(link => <a href={link.href} aria-current={active === 'blog' && link.href === '/blog/' ? 'page' : undefined}>{link.label}</a>)}
+      {navigation.map(link => <a href={navigationHref(link.anchor, Astro.url.pathname)} aria-current={active === 'blog' && link.anchor === 'blog' ? 'page' : undefined}>{link.label}</a>)}
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" type="button" aria-label="Переключить тему"><span class="sun"><Icon name="sun" size={18} /></span><span class="moon"><Icon name="moon" size={18} /></span></button>
-      <a class="button button-primary header-cta" href="#contact-dialog" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={20} /></a>
+      <a class="button button-primary header-cta" href={contactHref} data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={20} /></a>
       <button class="menu-toggle icon-button" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="main-nav"><Icon name="menu" /></button>
     </div>
   </div>
@@ -36,7 +29,7 @@ const navLinks = [
     <h2 id="contact-dialog-title">Обсудить задачу</h2>
     <p>{contactIntro}</p>
     <div class="contact-links">
-      {contacts.map(c => c.url ? <a class="button button-primary" href={c.url} target="_blank" rel="noopener noreferrer">{c.name} <Icon name="arrow" size={18} /></a> : <span class="contact-pending">{c.name} · ссылка пока не добавлена</span>)}
+      {contacts.map(contact => <a class="button button-primary" href={contact.url}>{contact.name} <Icon name="arrow" size={18} /></a>)}
     </div>
   </div>
 </dialog>

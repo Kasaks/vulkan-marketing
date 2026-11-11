@@ -1,12 +1,14 @@
 import type { APIRoute } from 'astro';
 import { site as data } from '../data/site';
 import { articles } from '../data/articles';
+import { cases } from '../data/cases';
 
 export const GET: APIRoute = ({ site }) => {
   const indexable = !data.demoMode && import.meta.env.SITE_INDEXABLE === 'true';
   const pages = [
     '/',
     '/blog/',
+    ...cases.map(project => `/cases/${project.slug}/`),
     ...articles.filter(article => article.status === 'published')
       .map(article => `/blog/${article.slug}/`),
   ];

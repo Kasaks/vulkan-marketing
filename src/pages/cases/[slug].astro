@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import Icon from '../../components/Icon.astro';
+import { cases, caseImagePath } from '../../data/cases';
+
+export function getStaticPaths() {
+  return cases.map(project => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+const { project } = Astro.props;
+---
+<BaseLayout title={`${project.title} — кейс Вулкан Маркетинг`} description={project.description}>
+  <SiteHeader />
+  <main id="main" class="section-space">
+    <article class="container case-article">
+      <a class="case-back" href="/#cases">Все кейсы</a>
+      <h1>{project.title}</h1>
+      <div class="case-result">
+        <strong>{project.metric}</strong>
+        <p>{project.period}</p>
+      </div>
+      <div class="case-story">
+        {project.story.map(paragraph => <p>{paragraph}</p>)}
+      </div>
+      <h2>Статистика на Авито</h2>
+      <div class="case-gallery case-screenshots">
+        {project.screenshots.map((shot, index) => (
+          <figure>
+            <a href={caseImagePath(shot.number)} data-gallery-open data-image-index={index} aria-label={`Увеличить: ${shot.caption}`}>
+              <img src={caseImagePath(shot.number)} alt={shot.caption} loading="lazy" />
+            </a>
+            <figcaption>{shot.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <a class="button button-primary" href="/#contact" data-dialog-open="contact-dialog">Обсудить задачу <Icon name="arrow" size={20} /></a>
+    </article>
+  </main>
+  <SiteFooter />
+  <dialog id="gallery-dialog" class="gallery-dialog" aria-label="Просмотр статистики">
+    <button type="button" data-close aria-label="Закрыть галерею">×</button>
+    {project.screenshots.length > 1 && <button type="button" data-gallery-prev aria-label="Предыдущий скриншот">←</button>}
+    <img alt="" />
+    {project.screenshots.length > 1 && <button type="button" data-gallery-next aria-label="Следующий скриншот">→</button>}
+  </dialog>
+</BaseLayout>
+
+<style>
+  .case-article { max-width: 1080px; }
+  .case-back { display: inline-block; margin-bottom: 22px; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .case-article h1 { max-width: 19ch; font-size: clamp(35px, 6vw, 80px); }
+  .case-result { margin: 30px 0; padding-left: 19px; border-left: 3px solid var(--accent); }
+  .case-result strong { display: block; font-size: clamp(29px, 3.5vw, 48px); line-height: 1.1; letter-spacing: -.05em; }
+  .case-result p { margin-top: 7px; }
+  .case-story { display: grid; gap: 15px; max-width: 64ch; font-size: clamp(16px, 1.8vw, 19px); line-height: 1.65; }
+  .case-article h2 { margin-top: 42px; font-size: clamp(26px, 3vw, 40px); }
+  .case-screenshots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 21px 0 33px; }
+  .case-screenshots figure { margin: 0; }
+  .case-screenshots a { display: block; overflow: hidden; border: 1px solid var(--line); border-radius: 15px; background: #fff; cursor: zoom-in; }
+  .case-screenshots img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
+  .case-screenshots figcaption { margin-top: 8px; color: var(--muted); font-size: 14px; }
+  .gallery-dialog img { display: block; max-width: 100%; min-width: 0; }
+  @media (max-width: 760px) {
+    .case-screenshots { grid-template-columns: minmax(0, 1fr); }
+    .gallery-dialog { gap: 0; padding-inline: 7px; }
+    .gallery-dialog button { padding-inline: 5px; }
+  }
+</style>

@@ -1,19 +1,11 @@
 ---
-const navLinks = [
-  { href: '/', label: 'В начало' },
-  { href: '/#cases', label: 'Кейсы' },
-  { href: '/#process', label: 'Как работаем' },
-  { href: '/#services', label: 'Услуги' },
-  { href: '/blog/', label: 'Блог' },
-  { href: '/#reviews', label: 'Отзывы' },
-  { href: '/#contact', label: 'Контакты' },
-];
+import { navigation, navigationHref } from '../data/site';
 ---
 <footer class="site-footer">
   <div class="container footer-grid">
     <div class="footer-brand"><a href="/">Вулкан Маркетинг</a><p>Ваш отдел маркетинга на Авито</p></div>
     <nav aria-label="Навигация в подвале">
-      {navLinks.map(link => <a href={link.href}>{link.label}</a>)}
+      {navigation.map(link => <a href={navigationHref(link.anchor, Astro.url.pathname)}>{link.label}</a>)}
     </nav>
     <p class="footer-note">© {new Date().getFullYear()} Вулкан Маркетинг</p>
   </div>

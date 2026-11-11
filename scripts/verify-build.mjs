@@ -16,6 +16,14 @@ const pages = [home, blog, errorPage];
 for (const slug of previewSlugs) {
   pages.push(await readOutput('blog/' + slug + '/index.html'));
 }
+const caseRoutes = ['tentovaya-produktsiya', 'myagkie-okna', 'stroymaterialy', 'raspil'];
+for (const slug of caseRoutes) {
+  const route = '/cases/' + slug + '/';
+  assert.ok(home.includes('href="' + route + '"'), 'Missing case card: ' + slug);
+  const casePage = await readOutput(route.slice(1) + 'index.html');
+  assert.ok(casePage.includes('data-gallery-open'), 'Missing case gallery: ' + slug);
+  pages.push(casePage);
+}
 for (let i = 0; i < pages.length; i++) {
   const html = pages[i];
   assert.match(html, /<html[^>]*lang="ru"/);
@@ -44,7 +52,15 @@ for (let i = 0; i < pages.length; i++) {
     assert.ok((await stat(resolve(root, '.' + asset))).isFile(), 'Missing asset: ' + asset);
   }
 }
-assert.match(home, /Стандартные/);
+assert.match(home, /Форматы сотрудничества/);
+const sectionOrder = ['work-cycle', 'cases', 'expertise', 'reviews', 'discuss', 'methods', 'contact', 'services', 'blog'];
+const homeSections = Array.from(home.matchAll(/<section\b[^>]* id="([^"]+)"/g), match => match[1]);
+assert.deepEqual(homeSections, sectionOrder, 'Homepage sections follow the agreed order');
+const mainMenu = home.match(/<nav id="main-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+const footerMenu = home.match(/<footer\b[\s\S]*?<nav[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+assert.ok(mainMenu && footerMenu, 'Both menus are present');
+assert.equal(mainMenu, footerMenu, 'Header and footer menus match');
+assert.match(home, /class="formats-link" href="#services"/, 'Contacts link to formats');
 assert.match(home, /href="\/blog\/kak-prodavat-tovary-na-avito-2026\/"/);
 assert.match(blog, /Анонс материала/);
 assert.match(blog, /Фотография будет добавлена/);
@@ -56,5 +72,5 @@ for (const slug of previewSlugs) {
 assert.match(errorPage, /noindex, follow/);
 const sitemap = await readOutput('sitemap.xml');
 assert.ok(!sitemap.includes('<loc>'), 'Demo sitemap should remain empty');
-console.log('Verified: homepage, blog archive, ' + previewSlugs.length + ' preview routes, metadata, modals and local assets.');
+console.log('Verified: homepage, blog archive, ' + previewSlugs.length + ' preview routes, ' + caseRoutes.length + ' cases, navigation, metadata, modals and local assets.');
 console.log('Visual browser QA still needed.');
