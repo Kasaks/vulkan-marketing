@@ -2,13 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import CaseStudies from '../components/CaseStudies.astro';
+import ClientReviews from '../components/ClientReviews.astro';
 import MarketingCycle from '../components/MarketingCycle.astro';
 import Icon from '../components/Icon.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { dzenChannelUrl, latestArticles } from '../data/articles';
-import { services, contactIntro, contacts, reviewSources, clientReviews, telegramChannelUrl } from '../data/site';
+import { services, contactIntro, contacts, telegramChannelUrl } from '../data/site';
 import '../styles/landing.css';
 
 const blogCards = latestArticles(3);
@@ -35,24 +36,7 @@ const blogCards = latestArticles(3);
       </div>
     </section>
 
-    <section class="reviews-section section-space" id="reviews" aria-labelledby="reviews-heading">
-      <div class="container reviews-layout">
-        <h2 id="reviews-heading">Отзывы наших клиентов</h2>
-        <div class="review-sources">
-          {clientReviews.map(review => (
-            <figure class="client-review">
-              <blockquote>«{review.quote}»</blockquote>
-              <figcaption>{review.author} · Яндекс Карты</figcaption>
-            </figure>
-          ))}
-          {reviewSources.map(source => (
-            <a class="review-source" href={source.url}>
-              <strong>{source.name}</strong><Icon name="arrow" size={22} />
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
+    <ClientReviews />
 
     <section class="section-space" id="discuss" aria-labelledby="discuss-heading">
       <div class="container">
@@ -73,37 +57,36 @@ const blogCards = latestArticles(3);
       <div class="container">
         <div class="landing-split methods-intro">
           <h2 id="methods-heading">Методы, которые нам помогают</h2>
-          <div class="landing-copy">
-            <p>Опыт работы на Авито помогает нам понимать, как устроена площадка, что допускают её правила и где для профиля возникают риски. Когда меняются условия продвижения, разбираемся, как это отразится на проекте и какие решения помогут сохранить целевые обращения.</p>
-          </div>
+          <p>Мы давно работаем с Авито и хорошо знаем правила площадки. Знаем и серые методы продвижения. Применяем их в тех проектах, где считаем это оправданным для стабильного и эффективного привлечения целевого трафика.</p>
         </div>
-        <div class="method-grid">
-          <article class="method-card">
-            <Icon name="target" size={28} />
-            <h3>Выбираем метод под задачу</h3>
-            <p>Смотрим, поможет ли конкретный способ приводить целевой трафик стабильно и эффективно. Масспостинг, дубли объявлений, перевыкладка и работа с несколькими аккаунтами могут нарушать правила Авито. Это учитываем, когда оцениваем вариант продвижения.</p>
+        <div class="methods-principles">
+          <article class="method-principle">
+            <h3>Когда применяем серые методы</h3>
+            <div>
+              <p>Вы могли слышать про масспостинг, дубли объявлений, перевыкладку и мультиаккаунтинг. Такие методы могут нарушать правила площадки и повлечь санкции. Мы отдаём себе отчёт в этих рисках и действуем с вашего согласия.</p>
+              <p>По нашей практике, блокировок аккаунтов в таких проектах не было. Поэтому у нас нет практического опыта разблокировки профилей.</p>
+            </div>
           </article>
-          <article class="method-card">
-            <Icon name="chat" size={28} />
-            <h3>Обсуждаем риски заранее</h3>
-            <p>Если у способа есть риск ограничений или других санкций со стороны площадки, объясняем, что может произойти с профилем, и действуем с вашего согласия. По опыту агентства, в таких проектах мы пока не сталкивались с блокировкой профиля.</p>
-          </article>
-          <article class="method-card">
-            <Icon name="chart" size={28} />
-            <h3>Оцениваем реальные обращения</h3>
-            <p>Мы не накручиваем поведенческие показатели и отзывы. Для проекта важны обращения от людей, которым подходит предложение. Подробнее о нашем отношении к накруткам рассказываем <a href={dzenChannelUrl}>в Дзене</a>.</p>
+          <article class="method-principle">
+            <h3>Почему отказываемся от накруток</h3>
+            <div>
+              <p>Мы не прибегаем к накрутке поведенческих факторов и отзывов. По нашему опыту, она приносит пользу продавцам накруток, а рекламе мешает. Подробно о том, почему такие действия вредят профилю, рассказываем <a href={dzenChannelUrl}>в Дзене</a>.</p>
+            </div>
           </article>
         </div>
         <div class="method-examples">
-          <h3>Два примера из практики</h3>
+          <div>
+            <h3>Два примера из практики</h3>
+            <p>Мы используем известные методы продвижения и придумываем собственные.</p>
+          </div>
           <dl>
             <div>
-              <dt>Расходы на платное продвижение</dt>
-              <dd>Когда Авито по-разному рассчитывало стоимость платных услуг в регионах, мы нашли возможность сократить расходы на продвижение объявлений с разовым размещением.</dd>
+              <dt>Экономия на платных услугах</dt>
+              <dd>Пару лет назад стоимость платных услуг для объявлений с разовым размещением зависела от региона. Мы нашли способ снизить расходы на продвижение за счёт разницы в тарифах.</dd>
             </div>
             <div>
-              <dt>Изменения после введения «Адресов бизнеса»</dt>
-              <dd>Когда Авито ограничило число городов для публикации, мы пересмотрели размещение в затронутых проектах. В кейсе фабрики тентов показали, как менялись просмотры и контакты и за какое время удалось восстановить объём обращений. <a href="#case-tentovaya-produktsiya" data-dialog-open="case-tentovaya-produktsiya-dialog" aria-haspopup="dialog">Посмотреть кейс</a></dd>
+              <dt>Ограничения «Адресов бизнеса»</dt>
+              <dd>С ноября 2025 по март 2026 года Авито ограничивало число городов для публикации. Мы нашли собственное решение, чтобы сохранить охват. Ещё до снятия ограничений показатели превысили уровень до их введения. Динамику просмотров и контактов можно увидеть в <a href="#case-tentovaya-produktsiya" data-dialog-open="case-tentovaya-produktsiya-dialog" aria-haspopup="dialog">кейсе фабрики тентов</a>.</dd>
             </div>
           </dl>
         </div>
@@ -114,10 +97,10 @@ const blogCards = latestArticles(3);
       <div class="container landing-split">
         <h2 id="contacts-heading">Наши контакты</h2>
         <div class="landing-copy">
-          <p>Есть конкретный вопрос по продвижению на Авито? Напишите нам в Telegram. На такие вопросы отвечаем бесплатно.</p>
+          <p>Есть конкретный вопрос по продвижению на Авито? Выберите удобный мессенджер и напишите нам. На такие вопросы отвечаем бесплатно.</p>
           <p>Если мы уже разбирали вашу тему в блоге, пришлём материал и ответим на вопросы, которые останутся после прочтения. Если нужно обсудить работу над проектом, расскажите, чем занимаетесь и чего хотите добиться на Авито.</p>
           <div class="landing-links">
-            {contacts.map(contact => <a class="button button-outline" href={contact.url}>Написать в {contact.name} <Icon name="arrow" size={18} /></a>)}
+            {contacts.map(contact => <a class="button button-outline" href={contact.url}>{contact.name} <Icon name="arrow" size={18} /></a>)}
           </div>
         </div>
       </div>
@@ -149,13 +132,14 @@ const blogCards = latestArticles(3);
       </div>
     </section>
 
-    <section class="blog-preview section-space" id="blog" aria-labelledby="home-blog-heading">
-      <div class="container">
-        <div class="section-heading blog-preview-heading">
-          <div><p class="section-kicker"><span class="kicker-line"></span>Блог</p><h2 id="home-blog-heading">Статьи<br /><em>об Авито</em></h2></div>
-          <div class="blog-preview-intro"><p>Материалы о продвижении, аналитике и продажах на Авито.</p><a href="/blog/" class="blog-all-link">Все статьи <Icon name="arrow" size={20} /></a></div>
+    <section class="landing-blog section-space" id="blog" aria-labelledby="home-blog-heading">
+      <div class="container landing-split">
+        <div class="landing-blog-intro">
+          <h2 id="home-blog-heading">Блог об Авито</h2>
+          <p>Пишем о продвижении, аналитике и продажах на Авито.</p>
+          <a href="/blog/" class="button button-outline">Все статьи <Icon name="arrow" size={18} /></a>
         </div>
-        <div class="blog-cards-grid">{blogCards.map(article => <ArticleCard article={article} />)}</div>
+        <div class="landing-article-list">{blogCards.map(article => <ArticleCard article={article} showCover={false} />)}</div>
       </div>
     </section>
   </main>
