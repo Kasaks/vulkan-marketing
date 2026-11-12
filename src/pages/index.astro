@@ -75,18 +75,15 @@ const blogCards = latestArticles(3);
           </article>
         </div>
         <div class="method-examples">
-          <div>
-            <h3>Два примера из практики</h3>
-            <p>Мы используем известные методы продвижения и придумываем собственные.</p>
-          </div>
+          <h3>Два примера из практики</h3>
           <dl>
             <div>
               <dt>Экономия на платных услугах</dt>
-              <dd>Пару лет назад стоимость платных услуг для объявлений с разовым размещением зависела от региона. Мы нашли способ снизить расходы на продвижение за счёт разницы в тарифах.</dd>
+              <dd>Для объявлений с разовым размещением подключали продвижение в регионе, где оно стоило дешевле. Когда возвращали объявление в его регион, сохранялась более низкая цена продвижения.</dd>
             </div>
             <div>
               <dt>Ограничения «Адресов бизнеса»</dt>
-              <dd>С ноября 2025 по март 2026 года Авито ограничивало число городов для публикации. Мы нашли собственное решение, чтобы сохранить охват. Ещё до снятия ограничений показатели превысили уровень до их введения. Динамику просмотров и контактов можно увидеть в <a href="#case-tentovaya-produktsiya" data-dialog-open="case-tentovaya-produktsiya-dialog" aria-haspopup="dialog">кейсе фабрики тентов</a>.</dd>
+              <dd>Когда Авито ограничило число городов для публикации, мы ежедневно меняли города скриптом. Объявления оставались активными, а ещё до снятия ограничений показатели стали выше, чем до их введения. <a href="#case-tentovaya-produktsiya" data-dialog-open="case-tentovaya-produktsiya-dialog" aria-haspopup="dialog">Кейс фабрики тентов</a></dd>
             </div>
           </dl>
         </div>
@@ -122,7 +119,15 @@ const blogCards = latestArticles(3);
                 {service.overview.map(paragraph => <p>{paragraph}</p>)}
                 <details>
                   <summary>Что входит</summary>
-                  <ul>{service.includes.map(item => <li>{item}</li>)}</ul>
+                  {typeof service.includes === 'string'
+                    ? <p>{service.includes}</p>
+                    : <ol>{service.includes.map(item => <li>{item}</li>)}</ol>}
+                  {service.includesExtras && (
+                    <>
+                      <p>{service.includesExtras.title}</p>
+                      <ul>{service.includesExtras.items.map(item => <li>{item}</li>)}</ul>
+                    </>
+                  )}
                 </details>
                 <a class="button button-outline" href="#contact" data-dialog-open="contact-dialog" aria-haspopup="dialog">{service.action} <Icon name="arrow" size={17} /></a>
               </div>
@@ -139,7 +144,7 @@ const blogCards = latestArticles(3);
           <p>Пишем о продвижении, аналитике и продажах на Авито.</p>
           <a href="/blog/" class="button button-outline">Все статьи <Icon name="arrow" size={18} /></a>
         </div>
-        <div class="landing-article-list">{blogCards.map(article => <ArticleCard article={article} showCover={false} />)}</div>
+        <div class="article-list">{blogCards.map(article => <ArticleCard article={article} showCover={false} />)}</div>
       </div>
     </section>
   </main>

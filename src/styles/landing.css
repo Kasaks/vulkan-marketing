@@ -52,7 +52,7 @@
 }
 .method-principle { padding: clamp(20px, 3vw, 36px) 0; border-bottom: 1px solid var(--line); }
 .method-principle h3, .method-examples h3 { font-size: clamp(23px, 2.3vw, 33px); }
-.method-principle p, .method-examples p, .method-examples dd { line-height: 1.65; }
+.method-principle p, .method-examples dd { line-height: 1.65; }
 .method-principle p + p { margin-top: 10px; }
 .method-principle a, .method-examples a { color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .method-examples {
@@ -62,7 +62,6 @@
   border-radius: 20px;
   background: var(--paper);
 }
-.method-examples p { margin-top: 10px; }
 .method-examples dl { display: grid; gap: 18px; margin: 0; }
 .method-examples dt { font-size: 17px; font-weight: 700; }
 .method-examples dd { margin-top: 5px; color: var(--muted); }
@@ -90,26 +89,14 @@
 .format-content details { width: 100%; border-block: 1px solid var(--line); }
 .format-content summary { padding-block: 11px; cursor: pointer; font-weight: 700; }
 .format-content summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.format-content ul { padding: 0 0 15px 20px; color: var(--muted); }
+.format-content details :is(ol, ul) { padding: 0 0 15px 24px; color: var(--muted); }
+.format-content details p { margin-bottom: 12px; }
 .format-content li + li { margin-top: 8px; }
 .format-content .button { min-height: 46px; padding: 11px 18px; gap: 10px; font-size: 14px; white-space: normal; text-align: left; }
 
 .landing-blog { background: var(--soft); border-top: 1px solid var(--line); }
 .landing-blog-intro p { margin: 14px 0 22px; font-size: 17px; line-height: 1.6; }
 .landing-blog-intro .button { min-height: 48px; padding: 12px 21px; }
-.landing-article-list { border-top: 1px solid var(--line); }
-.landing-article-list .article-card {
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  overflow: visible;
-}
-.landing-article-list .article-card:hover { box-shadow: none; transform: none; }
-.landing-article-list .article-card-body { padding: 19px 0; }
-.landing-article-list .article-card h3 { margin-top: 6px; }
-.landing-article-list .article-card-action { margin-top: 10px; padding-top: 0; }
-.landing-article-list .article-card-link:hover h3 { text-decoration: underline; text-underline-offset: 4px; }
 
 @media (max-width: 760px) {
   .landing-split, .discussion-panel, .format-card, .method-principle, .method-examples { grid-template-columns: minmax(0, 1fr); }

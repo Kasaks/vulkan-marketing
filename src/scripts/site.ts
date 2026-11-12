@@ -13,29 +13,6 @@ themeButton?.addEventListener('click', () => {
 });
 syncTheme();
 
-const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
-const nav = document.querySelector<HTMLElement>('#main-nav');
-function closeMenu(returnFocus = false) {
-  nav?.classList.remove('is-open');
-  menuButton?.setAttribute('aria-expanded', 'false');
-  menuButton?.setAttribute('aria-label', 'Открыть меню');
-  if (returnFocus) menuButton?.focus();
-}
-menuButton?.addEventListener('click', () => {
-  const expanded = menuButton.getAttribute('aria-expanded') !== 'true';
-  nav?.classList.toggle('is-open', expanded);
-  menuButton.setAttribute('aria-expanded', String(expanded));
-  menuButton.setAttribute('aria-label', expanded ? 'Закрыть меню' : 'Открыть меню');
-});
-nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => closeMenu()));
-document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && menuButton?.getAttribute('aria-expanded') === 'true') closeMenu(true);
-});
-document.addEventListener('click', event => {
-  if (event.target instanceof Node && !nav?.contains(event.target) && !menuButton?.contains(event.target)) closeMenu();
-});
-matchMedia('(min-width: 1051px)').addEventListener('change', () => closeMenu());
-
 document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
   const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
   const counter = carousel.querySelector<HTMLElement>('[data-count]');

@@ -27,7 +27,7 @@ const structuredData = {
 };
 ---
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,8 +36,8 @@ const structuredData = {
     <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow'} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#fcfaf8" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#101e25" />
+    <meta name="color-scheme" content="dark light" />
     <meta property="og:type" content={pageType} />
     <meta property="og:locale" content="ru_RU" />
     <meta property="og:site_name" content={site.name} />
@@ -53,8 +53,8 @@ const structuredData = {
       document.documentElement.classList.add('js');
       try {
         const saved = localStorage.getItem('vulkan-theme');
-        document.documentElement.dataset.theme = saved === 'light' || saved === 'dark' ? saved : 'light';
-      } catch { document.documentElement.dataset.theme = 'light'; }
+        if (saved === 'light' || saved === 'dark') document.documentElement.dataset.theme = saved;
+      } catch { /* The document already defaults to dark. */ }
     </script>
   </head>
   <body>

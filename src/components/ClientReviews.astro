@@ -1,38 +1,34 @@
 ---
 import Icon from './Icon.astro';
 
-const yandexReviewsUrl = 'https://yandex.com/maps/org/vulkan_marketing/229129493851/reviews/';
+const yandexReviewsUrl = 'https://yandex.ru/maps/org/vulkan_marketing/229129493851/reviews/';
 const telegramReviewsUrl = 'https://t.me/+-Jhv8nykbHkxN2Y6';
 
-// Ratings and dates are from the review metadata on the original Yandex Maps page.
+// Review texts, ratings and dates are from the Yandex Maps organization card.
 const reviews = [
   {
     author: 'Sport Detyam',
     date: '2025-02-21',
     displayDate: '21 февраля 2025',
-    quote: 'А здесь был приятно удивлен! Однозначно рекомендую!',
-    summary: 'Автор отмечает, что команда проверяла гипотезы, сама собирала статистику и на её основе планировала дальнейшие действия.',
+    text: "Большая благодарность Владимиру! Со мной работало много разных авитологов и первый раз вижу настолько глубокое включение в процесс. С разработкой и проверкой гипотез, автоматически без напоминания все включается, собирает статистику, делает выводы и на основании этого прокладывается дальнейший маршрут и план действий. В общем то как и должно быть, но повторюсь первый раз так все тщательно делается. В основном все взяли деньги, запустили автозагрузкой и дальше пусть хоть что там творится. А здесь был приятно удивлен! Однозначно рекомендую!",
   },
   {
     author: 'Valeria Star',
     date: '2025-01-21',
     displayDate: '21 января 2025',
-    quote: 'И отдельное спасибо за план дальнейших действий',
-    summary: 'На консультации разобрали тексты объявлений и примеры конкурентов, затем составили план улучшений профиля.',
+    text: "Обратилась за проведением диагностики моего аккаунта авито, очень понравилось, что Владимир подготовился к консультации досканально\n\nМне рассказали и про мои нелепые текста в объявлениях и показали всех топовых аонкурентов\n\nЕще раз спасибо ! И отдельное спасибо за план дальнейших действий 👍",
   },
   {
     author: 'Евгений Т.',
     date: '2025-01-22',
     displayDate: '22 января 2025',
-    quote: 'определили стратегию, план действий',
-    summary: 'Консультация была о продвижении кузовных автосервисов. Автор отмечает, что вместе с командой нашёл сильных конкурентов и понял, как действовать дальше.',
+    text: "Спасибо Владимиру за консультацию, разобрали тему кузовных автосервисов, определили стратегию, план действий и нашли сильных конкурентов, буду реализовывать 🤝",
   },
   {
     author: 'Anastasia',
     date: '2025-02-27',
     displayDate: '27 февраля 2025',
-    quote: 'Благодарим за оперативность, чёткость и надёжность',
-    summary: 'Клиентка прошла обучение автозагрузке для каталога автозапчастей, а затем обратилась за помощью с автовыгрузкой и продвижением профиля.',
+    text: "Очень довольна общением и сотрудничеством с Владимиром. \nСначала я взяла обучение по автозагрузке Авито, Владимир очень подробно рассказал, как правильно и самое главное удобно организовать хранение информации для выгрузки большого количества ассортимента товаров (у нас категория автозапчастей на Авито, приходится работать с огромным количеством наименований). Этот практический урок сильно помог нам понять, что нужно изменить в бизнес-процессе. Большое спасибо!\n\nТакже мы воспользовались услугой автовыгрузки на Авито и помощи в продвижении профиля. Остались очень довольны качеством оказанных услуг. Благодарим за оперативность, чёткость и надёжность. \n\nОднозначно буду рекомендовать Владимира коллегам, а также привлекать к другим проектам!\n\n",
   },
 ];
 ---
@@ -49,8 +45,7 @@ const reviews = [
           {reviews.map((review, index) => (
             <figure class="client-review" data-slide data-active={index === 0 ? 'true' : 'false'}>
               <span class="review-stars" role="img" aria-label="Оценка 5 из 5">★★★★★</span>
-              <blockquote>«{review.quote}»</blockquote>
-              <p>{review.summary}</p>
+              <blockquote cite={yandexReviewsUrl}>{review.text}</blockquote>
               <figcaption><strong>{review.author}</strong> <time datetime={review.date}>{review.displayDate}</time></figcaption>
             </figure>
           ))}
@@ -85,8 +80,7 @@ const reviews = [
     background: var(--paper);
   }
   .review-stars { color: var(--ink); font-size: 17px; letter-spacing: .19em; }
-  .client-review blockquote { margin: 13px 0 9px; font-size: clamp(19px, 1.8vw, 25px); line-height: 1.3; font-weight: 800; }
-  .client-review p { margin-bottom: 16px; font-size: 15px; line-height: 1.55; }
+  .client-review blockquote { margin: 13px 0 20px; color: var(--ink); font-size: 16px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
   .client-review figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-top: auto; color: var(--muted); font-size: 14px; }
   .client-review figcaption strong { color: var(--ink); }
   .review-controls { margin-top: 14px; justify-content: flex-end; }

@@ -71,6 +71,8 @@ const mainMenu = home.match(/<nav id="main-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
 const footerMenu = home.match(/<footer\b[\s\S]*?<nav[^>]*>([\s\S]*?)<\/nav>/)?.[1];
 assert.ok(mainMenu && footerMenu, 'Both menus are present');
 assert.equal(mainMenu, footerMenu, 'Header and footer menus match');
+assert.match(mainMenu, /<a href="\/blog\/">Блог<\/a>/);
+assert.doesNotMatch(home, /class="menu-toggle\b/);
 const discussion = home.match(/<section[^>]* id="discuss"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
 const contacts = home.match(/<section[^>]* id="contact"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
 assert.match(discussion, /class="formats-link" href="#services"/, 'Discussion links to formats');
@@ -87,7 +89,7 @@ for (const question of [
 }
 assert.match(home, /href="\/blog\/kak-prodavat-tovary-na-avito-2026\/"/);
 assert.match(blog, /Анонс материала/);
-assert.match(blog, /Фотография будет добавлена/);
+assert.match(blog, /<h1[^>]*>Блог об Авито<\/h1>/);
 assert.match(pages[3], /Это анонс, а не полная статья/);
 for (const slug of previewSlugs) {
   assert.ok(home.includes('href="/blog/' + slug + '/"'), 'Missing home card: ' + slug);
