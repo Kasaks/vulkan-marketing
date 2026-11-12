@@ -16,13 +16,24 @@ const pages = [home, blog, errorPage];
 for (const slug of previewSlugs) {
   pages.push(await readOutput('blog/' + slug + '/index.html'));
 }
-const caseRoutes = ['tentovaya-produktsiya', 'myagkie-okna', 'stroymaterialy', 'raspil'];
-for (const slug of caseRoutes) {
-  const route = '/cases/' + slug + '/';
-  assert.ok(home.includes('href="' + route + '"'), 'Missing case card: ' + slug);
-  const casePage = await readOutput(route.slice(1) + 'index.html');
-  assert.ok(casePage.includes('data-gallery-open'), 'Missing case gallery: ' + slug);
-  pages.push(casePage);
+const caseScreenshots = {
+  'tentovaya-produktsiya': [1, 2, 3, 4],
+  'myagkie-okna': [5, 8, 9, 10],
+  'stroymaterialy': [6],
+  'raspil': [7, 11, 12, 13],
+};
+for (const [slug, expectedShots] of Object.entries(caseScreenshots)) {
+  const anchor = 'case-' + slug;
+  const preview = home.match(new RegExp('<article[^>]* id="' + anchor + '"[^>]*>([\\s\\S]*?)</article>'))?.[1];
+  assert.ok(preview?.includes('data-dialog-open="' + anchor + '-dialog"'), 'Missing case preview: ' + slug);
+  const screenshots = content => Array.from(content.matchAll(/<img[^>]* src="\/images\/cases\/(\d+)\.png"/g), match => Number(match[1]));
+  assert.deepEqual(screenshots(preview), expectedShots.slice(0, 1), 'First screenshot on homepage: ' + slug);
+  const dialog = home.match(new RegExp('<dialog[^>]* id="' + anchor + '-dialog"[^>]*>([\\s\\S]*?)</dialog>'))?.[1];
+  assert.ok(dialog, 'Missing case dialog: ' + slug);
+  assert.deepEqual(screenshots(dialog), expectedShots, 'Case story image order: ' + slug);
+  assert.match(dialog, /<p\b[^>]*>[^<]+<\/p>[\s\S]+<figure\b[^>]*>[\s\S]+<\/figure>[\s\S]+<p\b/, 'Case story has text before and after its first screenshot');
+  const redirect = await readOutput('cases/' + slug + '/index.html');
+  assert.ok(redirect.includes('content="0;url=/#' + anchor + '"'), 'Legacy case redirects to its homepage anchor: ' + slug);
 }
 for (let i = 0; i < pages.length; i++) {
   const html = pages[i];
@@ -60,7 +71,20 @@ const mainMenu = home.match(/<nav id="main-nav"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
 const footerMenu = home.match(/<footer\b[\s\S]*?<nav[^>]*>([\s\S]*?)<\/nav>/)?.[1];
 assert.ok(mainMenu && footerMenu, 'Both menus are present');
 assert.equal(mainMenu, footerMenu, 'Header and footer menus match');
-assert.match(home, /class="formats-link" href="#services"/, 'Contacts link to formats');
+const discussion = home.match(/<section[^>]* id="discuss"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
+const contacts = home.match(/<section[^>]* id="contact"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
+assert.match(discussion, /class="formats-link" href="#services"/, 'Discussion links to formats');
+assert.ok(!contacts.includes('href="#services"'), 'Formats link has moved out of contacts');
+assert.match(home, /Мы ставим перед собой три основные задачи/);
+const formatSection = home.match(/<section[^>]* id="services"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
+for (const question of [
+  'А какой запрос у вас?',
+  'Хотите передать ведение проекта?',
+  'Нужен тест ниши или быстрый запуск Авито?',
+  'Хотите освоить автозагрузку?',
+]) {
+  assert.ok(formatSection.includes(question), 'Missing format call to action: ' + question);
+}
 assert.match(home, /href="\/blog\/kak-prodavat-tovary-na-avito-2026\/"/);
 assert.match(blog, /Анонс материала/);
 assert.match(blog, /Фотография будет добавлена/);
@@ -72,5 +96,5 @@ for (const slug of previewSlugs) {
 assert.match(errorPage, /noindex, follow/);
 const sitemap = await readOutput('sitemap.xml');
 assert.ok(!sitemap.includes('<loc>'), 'Demo sitemap should remain empty');
-console.log('Verified: homepage, blog archive, ' + previewSlugs.length + ' preview routes, ' + caseRoutes.length + ' cases, navigation, metadata, modals and local assets.');
+console.log('Verified: homepage, blog archive, ' + previewSlugs.length + ' preview routes, ' + Object.keys(caseScreenshots).length + ' cases, navigation, metadata, modals and local assets.');
 console.log('Visual browser QA still needed.');

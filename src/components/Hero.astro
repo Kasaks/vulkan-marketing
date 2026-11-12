@@ -32,6 +32,7 @@ import volcanoMascot from '../assets/volcano-mascot.png';
     </div>
 
     <div class="hero-details">
+      <p class="hero-intro">{hero.description}</p>
       <div class="hero-actions">
         <a class="button button-outline" href="#cases">{hero.secondary} <Icon name="arrow" size={20} /></a>
       </div>
@@ -53,7 +54,8 @@ import volcanoMascot from '../assets/volcano-mascot.png';
 
   .hero-heading { grid-area: heading; min-width: 0; align-self: end; }
   .hero-details { grid-area: details; min-width: 0; align-self: start; }
-  .hero-actions { margin-top: 0; }
+  .hero-intro { max-width: 46ch; font-size: clamp(16px, 1.45vw, 21px); line-height: 1.58; }
+  .hero-actions { margin-top: 20px; }
 
   .hero-department {
     grid-area: department;
@@ -89,7 +91,7 @@ import volcanoMascot from '../assets/volcano-mascot.png';
   }
 
   .department-board h2 {
-    font-size: clamp(25px, 2.1vw, 32px);
+    font-size: clamp(22px, 1.9vw, 29px);
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -.045em;
@@ -160,7 +162,7 @@ import volcanoMascot from '../assets/volcano-mascot.png';
   @media (max-width: 760px) {
     .hero-layout {
       grid-template-columns: minmax(0, 1fr);
-      grid-template-areas: 'heading' 'department' 'details';
+      grid-template-areas: 'heading' 'details' 'department';
       row-gap: 24px;
       padding-block: 36px 38px;
       min-height: 0;
@@ -178,7 +180,7 @@ import volcanoMascot from '../assets/volcano-mascot.png';
   @media (max-width: 370px) {
     .hero-department { grid-template-columns: minmax(0, .84fr) minmax(0, 1.16fr); }
     .department-board { padding: 18px 12px 20px; }
-    .department-board h2 { font-size: 20px; }
+    .department-board h2 { font-size: 18px; }
     .department-tasks { gap: 13px; margin-top: 17px; }
     .department-tasks li { font-size: 13px; grid-template-columns: 16px minmax(0, 1fr); gap: 6px; }
     .task-marker { width: 16px; height: 16px; }

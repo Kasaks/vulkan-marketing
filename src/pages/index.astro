@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import CaseStudies from '../components/CaseStudies.astro';
 import MarketingCycle from '../components/MarketingCycle.astro';
 import Icon from '../components/Icon.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { dzenChannelUrl, latestArticles } from '../data/articles';
-import { cases } from '../data/cases';
 import { services, contactIntro, contacts, reviewSources, clientReviews, telegramChannelUrl } from '../data/site';
 import '../styles/landing.css';
 
@@ -19,21 +19,7 @@ const blogCards = latestArticles(3);
     <Hero />
     <MarketingCycle />
 
-    <section class="case-section section-space" id="cases" aria-labelledby="cases-heading">
-      <div class="container">
-        <h2 id="cases-heading">Вот что у нас получается</h2>
-        <div class="results-grid">
-          {cases.map(project => (
-            <article class="result-card">
-              <h3>{project.title}</h3>
-              <p>{project.description}</p>
-              <div class="result-metric"><strong>{project.metric}</strong><span>{project.period}</span></div>
-              <a class="result-link" href={`/cases/${project.slug}/`} aria-label={`Смотреть кейс «${project.title}»`}>Смотреть кейс <Icon name="arrow" size={19} /></a>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
+    <CaseStudies />
 
     <section class="expertise section-space" id="expertise" aria-labelledby="expertise-heading">
       <div class="container landing-split">
@@ -75,30 +61,64 @@ const blogCards = latestArticles(3);
             <h2 id="discuss-heading">Обсудим вашу задачу</h2>
             <p>{contactIntro}</p>
           </div>
-          <a class="button button-primary" href="#contact" data-dialog-open="contact-dialog">Написать нам <Icon name="arrow" size={20} /></a>
+          <div class="discussion-actions">
+            <a class="button button-primary" href="#contact" data-dialog-open="contact-dialog">Написать нам <Icon name="arrow" size={20} /></a>
+            <a class="formats-link" href="#services">Посмотреть форматы сотрудничества <Icon name="arrow" size={18} /></a>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="methods section-space" id="methods" aria-labelledby="methods-heading">
-      <div class="container landing-split">
-        <h2 id="methods-heading">Методы, которые нам помогают</h2>
-        <div class="landing-copy">
-          <p>Мы изучаем правила Авито и учитываем, как изменения площадки влияют на продвижение. Если способ продвижения несёт риск для профиля, объясняем этот риск и согласовываем решение с вами до применения.</p>
-          <p>Мы не накручиваем поведенческие показатели и отзывы.</p>
+      <div class="container">
+        <div class="landing-split methods-intro">
+          <h2 id="methods-heading">Методы, которые нам помогают</h2>
+          <div class="landing-copy">
+            <p>Опыт работы на Авито помогает нам понимать, как устроена площадка, что допускают её правила и где для профиля возникают риски. Когда меняются условия продвижения, разбираемся, как это отразится на проекте и какие решения помогут сохранить целевые обращения.</p>
+          </div>
+        </div>
+        <div class="method-grid">
+          <article class="method-card">
+            <Icon name="target" size={28} />
+            <h3>Выбираем метод под задачу</h3>
+            <p>Смотрим, поможет ли конкретный способ приводить целевой трафик стабильно и эффективно. Масспостинг, дубли объявлений, перевыкладка и работа с несколькими аккаунтами могут нарушать правила Авито. Это учитываем, когда оцениваем вариант продвижения.</p>
+          </article>
+          <article class="method-card">
+            <Icon name="chat" size={28} />
+            <h3>Обсуждаем риски заранее</h3>
+            <p>Если у способа есть риск ограничений или других санкций со стороны площадки, объясняем, что может произойти с профилем, и действуем с вашего согласия. По опыту агентства, в таких проектах мы пока не сталкивались с блокировкой профиля.</p>
+          </article>
+          <article class="method-card">
+            <Icon name="chart" size={28} />
+            <h3>Оцениваем реальные обращения</h3>
+            <p>Мы не накручиваем поведенческие показатели и отзывы. Для проекта важны обращения от людей, которым подходит предложение. Подробнее о нашем отношении к накруткам рассказываем <a href={dzenChannelUrl}>в Дзене</a>.</p>
+          </article>
+        </div>
+        <div class="method-examples">
+          <h3>Два примера из практики</h3>
+          <dl>
+            <div>
+              <dt>Расходы на платное продвижение</dt>
+              <dd>Когда Авито по-разному рассчитывало стоимость платных услуг в регионах, мы нашли возможность сократить расходы на продвижение объявлений с разовым размещением.</dd>
+            </div>
+            <div>
+              <dt>Изменения после введения «Адресов бизнеса»</dt>
+              <dd>Когда Авито ограничило число городов для публикации, мы пересмотрели размещение в затронутых проектах. В кейсе фабрики тентов показали, как менялись просмотры и контакты и за какое время удалось восстановить объём обращений. <a href="#case-tentovaya-produktsiya" data-dialog-open="case-tentovaya-produktsiya-dialog" aria-haspopup="dialog">Посмотреть кейс</a></dd>
+            </div>
+          </dl>
         </div>
       </div>
     </section>
 
-    <section class="contact-section" id="contact" aria-labelledby="contacts-heading">
-      <div class="container contact-content">
-        <div>
-          <h2 id="contacts-heading">Наши контакты</h2>
-          <p>Ваш отдел маркетинга на Авито. Если у вас есть конкретный вопрос по продвижению, напишите нам. Ответим бесплатно.</p>
-          <div class="direct-contacts">
-            {contacts.map(contact => <a href={contact.url}>{contact.name} <Icon name="arrow" size={16} /></a>)}
+    <section class="landing-contact section-space" id="contact" aria-labelledby="contacts-heading">
+      <div class="container landing-split">
+        <h2 id="contacts-heading">Наши контакты</h2>
+        <div class="landing-copy">
+          <p>Есть конкретный вопрос по продвижению на Авито? Напишите нам в Telegram. На такие вопросы отвечаем бесплатно.</p>
+          <p>Если мы уже разбирали вашу тему в блоге, пришлём материал и ответим на вопросы, которые останутся после прочтения. Если нужно обсудить работу над проектом, расскажите, чем занимаетесь и чего хотите добиться на Авито.</p>
+          <div class="landing-links">
+            {contacts.map(contact => <a class="button button-outline" href={contact.url}>Написать в {contact.name} <Icon name="arrow" size={18} /></a>)}
           </div>
-          <a class="formats-link" href="#services">Посмотреть форматы сотрудничества <Icon name="arrow" size={18} /></a>
         </div>
       </div>
     </section>
@@ -106,18 +126,23 @@ const blogCards = latestArticles(3);
     <section class="section-space" id="services" aria-labelledby="services-heading">
       <div class="container">
         <h2 id="services-heading">Форматы сотрудничества</h2>
-        <div class="formats-grid">
+        <p class="formats-intro">Можно прийти за планом улучшений, передать профиль на ведение, заказать запуск или освоить автозагрузку на своём проекте.</p>
+        <div class="formats-list">
           {services.map(service => (
             <article class="format-card" id={`${service.id}-details`}>
-              <span class="service-icon"><Icon name={service.icon} size={27} /></span>
-              <h3>{service.title}</h3>
-              <p>{service.description}</p>
-              <div class="format-price"><strong>{service.price}</strong>{service.unit && <span>{service.unit}</span>}</div>
-              <details>
-                <summary>Что входит</summary>
-                <ul>{service.includes.map(item => <li>{item}</li>)}</ul>
-              </details>
-              <a class="button button-outline" href="#contact" data-dialog-open="contact-dialog">{service.action} <Icon name="arrow" size={17} /></a>
+              <div class="format-heading">
+                <span class="service-icon"><Icon name={service.icon} size={27} /></span>
+                <h3>{service.title}</h3>
+                <div class="format-price"><strong>{service.price}</strong>{service.unit && <span>{service.unit}</span>}</div>
+              </div>
+              <div class="format-content">
+                {service.overview.map(paragraph => <p>{paragraph}</p>)}
+                <details>
+                  <summary>Что входит</summary>
+                  <ul>{service.includes.map(item => <li>{item}</li>)}</ul>
+                </details>
+                <a class="button button-outline" href="#contact" data-dialog-open="contact-dialog" aria-haspopup="dialog">{service.action} <Icon name="arrow" size={17} /></a>
+              </div>
             </article>
           ))}
         </div>

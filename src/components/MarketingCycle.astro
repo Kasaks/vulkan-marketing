@@ -7,7 +7,11 @@ import { workCycle } from '../data/site';
   <div class="container cycle-layout">
     <div class="cycle-heading">
       <h2 id="work-cycle-title">Как мы добиваемся <em>лучших показателей</em></h2>
-      <p>Сначала изучаем нишу и готовим объявления. После запуска смотрим статистику и переписки, чтобы понять, какие объявления приводят целевые обращения и что стоит улучшить.</p>
+      <div class="cycle-intro">
+        <p>Чтобы стабильно приводить целевых клиентов и повышать эффективность продвижения, мы выстроили систему работы. Каждый этап опирается на предыдущий: исследование помогает выбрать позиционирование, а от него зависят тексты, визуал и стратегия публикации.</p>
+        <p>Эффективность рекламы растёт со временем. После запуска регулярно смотрим статистику и читаем переписки. Ищем даже небольшие улучшения: где можно немного повысить конверсию и что уточнить в объявлении, чтобы отсеять нецелевые обращения.</p>
+        <p>Когда нужно выбрать, какую гипотезу проверить первой, опираемся и на опыт работы с площадкой. Результат проверяем по данным следующего запуска.</p>
+      </div>
     </div>
     <div class="cycle-diagram">
       <div class="cycle-track">
@@ -33,12 +37,12 @@ import { workCycle } from '../data/site';
     display: grid;
     grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
     gap: clamp(30px, 6vw, 100px);
-    align-items: center;
+    align-items: start;
   }
 
   .cycle-heading h2 { font-size: clamp(34px, 4.35vw, 66px); text-wrap: balance; }
   .cycle-heading em { color: var(--accent); font-style: normal; }
-  .cycle-heading p { max-width: 44ch; margin-top: 24px; font-size: 18px; line-height: 1.65; }
+  .cycle-intro { display: grid; gap: 16px; max-width: 46ch; margin-top: 24px; font-size: 17px; line-height: 1.65; }
   .cycle-track { position: relative; padding-right: 30px; }
   .cycle-steps { display: grid; gap: 28px; list-style: none; }
 
@@ -112,7 +116,7 @@ import { workCycle } from '../data/site';
 
   @media (max-width: 760px) {
     .cycle-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-    .cycle-heading p { margin-top: 16px; font-size: 16px; }
+    .cycle-intro { margin-top: 16px; font-size: 16px; }
     .cycle-step { padding: 15px 16px; }
     .cycle-step p { font-size: 14px; }
   }

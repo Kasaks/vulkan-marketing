@@ -74,7 +74,7 @@ document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
 
 function openDialog(id: string) {
   const dialog = document.getElementById(id);
-  if (!(dialog instanceof HTMLDialogElement)) return;
+  if (!(dialog instanceof HTMLDialogElement) || dialog.open) return;
   dialog.showModal();
   document.body.classList.add('modal-open');
 }
@@ -91,38 +91,12 @@ document.querySelectorAll<HTMLDialogElement>('dialog').forEach(dialog => {
   });
   dialog.addEventListener('close', () => document.body.classList.toggle('modal-open', Boolean(document.querySelector('dialog[open]'))));
 });
-const gallery = document.querySelector<HTMLDialogElement>('#gallery-dialog');
-if (gallery) {
-  const galleryImage = gallery.querySelector('img');
-  const thumbnails = Array.from(document.querySelectorAll<HTMLImageElement>('.case-gallery img'));
-  let galleryIndex = 0;
-
-  function showGalleryImage() {
-    const thumbnail = thumbnails[galleryIndex];
-    if (!galleryImage || !thumbnail) return;
-    galleryImage.src = thumbnail.src;
-    galleryImage.alt = thumbnail.alt;
+function openLinkedCase() {
+  const target = document.getElementById(window.location.hash.slice(1));
+  if (target?.dataset.caseDialog && !document.querySelector('dialog[open]')) {
+    openDialog(target.dataset.caseDialog);
   }
-
-  function moveGallery(offset: number) {
-    galleryIndex = (galleryIndex + offset + thumbnails.length) % thumbnails.length;
-    showGalleryImage();
-  }
-
-  document.querySelectorAll<HTMLAnchorElement>('[data-gallery-open]').forEach(link => {
-    link.addEventListener('click', event => {
-      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      galleryIndex = Number(link.dataset.imageIndex);
-      showGalleryImage();
-      openDialog(gallery.id);
-    });
-  });
-  gallery.querySelector('[data-gallery-prev]')?.addEventListener('click', () => moveGallery(-1));
-  gallery.querySelector('[data-gallery-next]')?.addEventListener('click', () => moveGallery(1));
-  gallery.addEventListener('keydown', event => {
-    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
-    event.preventDefault();
-    moveGallery(event.key === 'ArrowRight' ? 1 : -1);
-  });
 }
+
+window.addEventListener('hashchange', openLinkedCase);
+openLinkedCase();
