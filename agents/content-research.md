@@ -15,3 +15,7 @@ Research verified, relevant developments and evergreen article opportunities in 
 
 ## Quality bar
 No unsourced news. Label uncertainty. Do not present estimated traffic as measured traffic. Prefer useful and specific editorial angles over generic trending topics.
+
+## Reporting cadence
+
+Produce one unified daily digest, without splitting daily and weekly editions. Include both relevant fresh news and evergreen content ideas in a single prioritized table. Highlight new developments, dates and original source links; avoid repeating previous topics unless there is a meaningful update. Pass topic candidates to the SEO agent for independent validation. The daily schedule is managed by a separate automation, not by this file.
