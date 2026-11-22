@@ -19,3 +19,7 @@ No unsourced news. Label uncertainty. Do not present estimated traffic as measur
 ## Reporting cadence
 
 Produce one unified daily digest, without splitting daily and weekly editions. Include both relevant fresh news and evergreen content ideas in a single prioritized table. Highlight new developments, dates and original source links; avoid repeating previous topics unless there is a meaningful update. Pass topic candidates to the SEO agent for independent validation. The daily schedule is managed by a separate automation, not by this file.
+
+## Reporting destinations
+
+Keep one cumulative native Google Sheet for all topic ideas (append new verified, deduplicated rows; do not replace prior entries): https://docs.google.com/spreadsheets/d/1oabPcCozixy__JXcezoy_vTcGW3WIEUvLuKnXLSZDwI/edit . The sheet is named `Реестр тем`. Maintain dated Markdown research reports in GitHub as an auditable archive when a GitHub write action is available. The scheduled automation must explicitly integrate both write destinations; merely naming them in these instructions does not guarantee unattended writes. Do not claim synchronization without verifying each destination.
