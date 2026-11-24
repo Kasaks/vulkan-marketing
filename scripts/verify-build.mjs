@@ -99,6 +99,9 @@ const contacts = home.match(/<section[^>]* id="contact"[^>]*>([\s\S]*?)<\/sectio
 assert.match(discussion, /class="formats-link" href="#services"/, 'Discussion links to formats');
 assert.ok(!contacts.includes('href="#services"'), 'Formats link has moved out of contacts');
 assert.match(home, /Мы ставим перед собой три основные задачи/);
+assert.match(home, /Как мы добиваемся <em[^>]*>лучших показателей<\/em>/);
+assert.match(home, /Вот что у нас получается/);
+assert.match(home, /Фабрика тентовой продукции из Кирова/);
 const formatSection = home.match(/<section[^>]* id="services"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
 for (const question of [
   'А какой запрос у вас?',
@@ -109,7 +112,7 @@ for (const question of [
   assert.ok(formatSection.includes(question), 'Missing format call to action: ' + question);
 }
 assert.doesNotMatch(blog, /Анонс материала|Фотография будет добавлена|Сейчас представлены анонсы|Перейти на канал в Дзене/);
-assert.match(blog, /<h1[^>]*>Блог об Авито<\/h1>/);
+assert.match(blog, /id="blog-archive-title">Материалы<\/h2>/);
 for (const html of pages.slice(3, 3 + previewSlugs.length)) {
   assert.match(html, /Это анонс, а не полная статья/);
 }
@@ -125,6 +128,7 @@ const cards = html => Array.from(
 );
 assert.deepEqual(cards(home), publishedCards.slice(0, 3), 'Latest articles and dates on the homepage');
 assert.deepEqual(cards(blog), publishedCards, 'Published articles and dates in the archive');
+assert.equal((blog.match(/<img[^>]* src="\/images\/blog\//g) || []).length, publishedCards.length, 'Cover on every archive card');
 assert.match(errorPage, /noindex, follow/);
 const sitemap = await readOutput('sitemap.xml');
 assert.ok(!sitemap.includes('<loc>'), 'Demo sitemap should remain empty');
