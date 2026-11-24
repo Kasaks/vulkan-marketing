@@ -13,6 +13,7 @@ export function getStaticPaths() {
 }
 
 const { article } = Astro.props;
+const ArticleContent = article.Content;
 const cover = article.images[0];
 const isPreview = article.status === 'preview';
 const related = articles.filter(item => item.slug !== article.slug).slice(0, 2);
@@ -26,18 +27,24 @@ const related = articles.filter(item => item.slug !== article.slug).slice(0, 2);
         <header class="blog-article-header">
           <p class="section-kicker"><span class="kicker-line"></span>{isPreview ? 'Анонс материала' : 'Статья · Вулкан Маркетинг'}</p>
           <h1>{article.title}</h1>
-          <p class="blog-article-lead">{article.excerpt}</p>
+          {!ArticleContent && <p class="blog-article-lead">{article.excerpt}</p>}
           {article.publishedAt && !isPreview && <time datetime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' })}</time>}
         </header>
-        <div class="blog-article-cover">
-          {cover
-            ? <img src={cover} alt={`Первая фотография материала «${article.title}»`} width="1280" height="760" />
-            : <div class="article-cover-placeholder" role="img" aria-label="Исходная фотография статьи пока не добавлена"><span class="placeholder-emblem" aria-hidden="true">ВМ</span><span>Оригинальная фотография ожидается</span></div>}
-        </div>
+        {ArticleContent
+          ? !article.coverInBody && <figure class="blog-article-original-cover">
+              <img src={cover} alt={article.coverCaption ? '' : `Первая фотография материала «${article.title}»`} width={article.coverWidth} height={article.coverHeight} />
+              {article.coverCaption && <figcaption>{article.coverCaption}</figcaption>}
+            </figure>
+          : <div class="blog-article-cover">
+              {cover
+                ? <img src={cover} alt={`Первая фотография материала «${article.title}»`} width="1280" height="760" />
+                : <div class="article-cover-placeholder" role="img" aria-label="Исходная фотография статьи пока не добавлена"><span class="placeholder-emblem" aria-hidden="true">ВМ</span><span>Оригинальная фотография ожидается</span></div>}
+            </div>}
         <div class="blog-article-content">
           {isPreview ? <aside class="blog-preview-note"><strong>Это анонс, а не полная статья.</strong><p>Исходный текст и фотографии с Дзена пока не удалось получить. Ниже — доступные фрагменты авторского анонса.</p></aside> : null}
           {isPreview
             ? article.previewParagraphs.map(paragraph => <p>{paragraph}</p>)
+            : ArticleContent ? <div class="blog-text-section blog-markdown"><ArticleContent /></div>
             : article.sections.map(section => <section class="blog-text-section">
                 {section.heading && <h2>{section.heading}</h2>}
                 {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}

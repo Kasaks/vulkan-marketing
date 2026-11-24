@@ -547,6 +547,19 @@ body.modal-open{overflow:hidden}
 .blog-text-section h2{font-size:clamp(30px,3.6vw,48px);letter-spacing:-.055em;margin:55px 0 22px}
 .blog-text-section figure{margin:34px 0}
 .blog-text-section figure img{width:100%;height:auto;border-radius:14px}
+.blog-article-original-cover{margin:0}
+.blog-article-original-cover img{width:100%;height:auto;max-height:680px;object-fit:contain;border-radius:20px;background:var(--dark)}
+.blog-article-original-cover figcaption,.blog-markdown figcaption{margin-top:10px;color:var(--muted);font-size:14px;line-height:1.5}
+.blog-markdown{font-size:clamp(16px,1.5vw,18px);line-height:1.75;overflow-wrap:anywhere}
+.blog-markdown a{color:var(--accent);text-decoration:underline;text-underline-offset:.15em}
+.blog-markdown h3,.blog-markdown h4{margin-block:32px 16px}
+.blog-markdown ul,.blog-markdown ol{margin:0 0 24px;padding-inline-start:1.6em}
+.blog-markdown li{margin-bottom:8px}
+.blog-markdown li>p{margin-bottom:8px}
+.blog-markdown blockquote{margin:0 0 24px;padding-inline-start:18px;border-inline-start:3px solid var(--line)}
+.blog-markdown pre{max-width:100%;overflow:auto;padding:16px;border-radius:12px}
+.blog-markdown code{font-size:.9em}
+.blog-markdown pre code{font-size:inherit}
 .blog-preview-note{border-left:3px solid var(--accent);padding:19px 23px;background:var(--soft);border-radius:0 14px 14px 0;margin-bottom:35px}
 .blog-preview-note strong{display:block;color:var(--ink);font-size:18px}
 .blog-preview-note p{font-size:15px;line-height:1.55;margin-top:8px}
