@@ -1,34 +1,42 @@
-/**
- * Blog content source.
- *
- * These initial entries are PREVIEWS based on the author's public Telegram announcements,
- * not copies of their full Dzen articles. Do not mark them "published" until the original
- * article text and pictures have been verified and added.
- *
- * The thumbnail is always images[0], which must be the first real photo of the article.
- * To publish a full article, set status: 'published' and populate sections and images.
- */
+import type { MarkdownInstance } from 'astro';
+
 export type ArticleSection = {
   heading?: string;
   paragraphs: string[];
   images?: string[];
 };
 
-export type BlogArticle = {
+type ArticleMetadata = {
   slug: string;
   title: string;
   excerpt: string;
-  status: 'preview' | 'published';
   images: string[];
-  sections: ArticleSection[];
-  previewParagraphs: string[];
   originalUrl: string;
   publishedAt?: string;
 };
 
+type MarkdownArticle = Omit<ArticleMetadata, 'slug'> & {
+  publishedAt: string;
+  coverInBody?: boolean;
+  coverCaption?: string;
+  coverWidth: number;
+  coverHeight: number;
+};
+
+export type BlogArticle = ArticleMetadata & {
+  status: 'preview' | 'published';
+  sections: ArticleSection[];
+  previewParagraphs: string[];
+  coverInBody?: boolean;
+  coverCaption?: string;
+  coverWidth?: number;
+  coverHeight?: number;
+  Content?: MarkdownInstance<MarkdownArticle>['Content'];
+};
+
 export const dzenChannelUrl = 'https://dzen.ru/vulkan_marketing';
 
-export const articles: BlogArticle[] = [
+const previews: BlogArticle[] = [
   {
     slug: 'kak-prodavat-tovary-na-avito-2026',
     title: 'Как продавать на Авито товары в 2026 году?',
@@ -71,7 +79,23 @@ export const articles: BlogArticle[] = [
   }
 ];
 
+const markdownModules = import.meta.glob<MarkdownInstance<MarkdownArticle>>(
+  '../content/blog/*.md',
+  { eager: true },
+);
+
+const published = Object.entries(markdownModules)
+  .map(([file, { frontmatter, Content }]) => ({
+    ...frontmatter,
+    slug: file.slice(file.lastIndexOf('/') + 1, -3),
+    Content,
+    status: 'published' as const,
+    sections: [],
+    previewParagraphs: [],
+  }))
+  .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+
+export const articles: BlogArticle[] = [...published, ...previews];
+
 export const latestArticles = (count = 3): BlogArticle[] =>
-  [...articles]
-    .sort((a, b) => (b.publishedAt ?? '').localeCompare(a.publishedAt ?? ''))
-    .slice(0, count);
+  articles.slice(0, count);

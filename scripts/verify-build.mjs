@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const root = resolve('dist');
@@ -12,9 +12,27 @@ const previewSlugs = [
   'ves-obyavleniya-i-profilya-na-avito',
   'analiz-statistiki-obyavleniy-na-avito'
 ];
+const publishedSlugs = (await readdir('src/content/blog', { withFileTypes: true }))
+  .filter(entry => entry.isFile() && entry.name.endsWith('.md'))
+  .map(entry => entry.name.slice(0, -3));
+assert.ok(publishedSlugs.length, 'The blog has published articles');
+const articleSlugs = new Set([...publishedSlugs, ...previewSlugs]);
+assert.equal(articleSlugs.size, publishedSlugs.length + previewSlugs.length, 'Article slugs are unique');
 const pages = [home, blog, errorPage];
 for (const slug of previewSlugs) {
   pages.push(await readOutput('blog/' + slug + '/index.html'));
+}
+const publishedDates = new Map();
+for (const slug of publishedSlugs) {
+  const html = await readOutput('blog/' + slug + '/index.html');
+  const date = html.match(/<time datetime="(\d{4}-\d{2}-\d{2})"/)?.[1];
+  assert.ok(date, 'Missing publication date: ' + slug);
+  assert.match(html, /"@type":"BlogPosting"/, 'Missing BlogPosting metadata: ' + slug);
+  assert.match(html, /class="blog-text-section blog-markdown"/, 'Missing article body: ' + slug);
+  assert.match(html, /<img[^>]* src="\/images\/blog\//, 'Missing article photos: ' + slug);
+  assert.doesNotMatch(html, /Оригинальная фотография ожидается/, 'Unexpected cover placeholder: ' + slug);
+  publishedDates.set(slug, date);
+  pages.push(html);
 }
 const caseScreenshots = {
   'tentovaya-produktsiya': [1, 2, 3, 4],
@@ -55,6 +73,9 @@ for (let i = 0; i < pages.length; i++) {
   for (const [, target] of html.matchAll(/href="#([^"]+)"/g)) {
     assert.ok(html.includes('id="' + target + '"'), 'Missing internal target ' + target);
   }
+  for (const [, slug] of html.matchAll(/href="\/blog\/([^"/]+)\/"/g)) {
+    assert.ok(articleSlugs.has(slug), 'Missing article route: ' + slug);
+  }
   for (const [, target] of html.matchAll(/data-dialog-open="([^"]+)"/g)) {
     assert.ok(html.includes('id="' + target + '"'), 'Missing modal ' + target);
   }
@@ -87,16 +108,20 @@ for (const question of [
 ]) {
   assert.ok(formatSection.includes(question), 'Missing format call to action: ' + question);
 }
-assert.match(home, /href="\/blog\/kak-prodavat-tovary-na-avito-2026\/"/);
 assert.match(blog, /Анонс материала/);
 assert.match(blog, /<h1[^>]*>Блог об Авито<\/h1>/);
-assert.match(pages[3], /Это анонс, а не полная статья/);
-for (const slug of previewSlugs) {
-  assert.ok(home.includes('href="/blog/' + slug + '/"'), 'Missing home card: ' + slug);
-  assert.ok(blog.includes('href="/blog/' + slug + '/"'), 'Missing blog card: ' + slug);
+for (const html of pages.slice(3, 3 + previewSlugs.length)) {
+  assert.match(html, /Это анонс, а не полная статья/);
 }
+const publishedNewestFirst = [...publishedSlugs].sort((a, b) => publishedDates.get(b).localeCompare(publishedDates.get(a)));
+const cardSlugs = html => Array.from(
+  html.matchAll(/class="article-card-link" href="\/blog\/([^"]+)\/"/g),
+  match => match[1],
+);
+assert.deepEqual(cardSlugs(home), [...publishedNewestFirst, ...previewSlugs].slice(0, 3), 'Latest articles on the homepage');
+assert.deepEqual(cardSlugs(blog), [...publishedNewestFirst, ...previewSlugs], 'Article and preview order in the archive');
 assert.match(errorPage, /noindex, follow/);
 const sitemap = await readOutput('sitemap.xml');
 assert.ok(!sitemap.includes('<loc>'), 'Demo sitemap should remain empty');
-console.log('Verified: homepage, blog archive, ' + previewSlugs.length + ' preview routes, ' + Object.keys(caseScreenshots).length + ' cases, navigation, metadata, modals and local assets.');
+console.log('Verified: homepage, blog archive, ' + publishedSlugs.length + ' articles, ' + previewSlugs.length + ' previews, ' + Object.keys(caseScreenshots).length + ' cases, navigation, metadata, modals and local assets.');
 console.log('Visual browser QA still needed.');

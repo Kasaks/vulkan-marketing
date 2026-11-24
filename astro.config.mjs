@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import { existsSync } from 'node:fs';
 import { loadEnvFile } from 'node:process';
 
@@ -8,4 +9,12 @@ const site = process.env.SITE_URL || 'https://vulkan-marketing-demo.alive-kiwi-5
 if (process.env.SITE_INDEXABLE === 'true' && (!process.env.SITE_URL || new URL(site).hostname === 'example.com')) {
   throw new Error('Set SITE_URL to the real website origin before enabling indexing.');
 }
-export default defineConfig({ site, output: 'static', trailingSlash: 'always' });
+export default defineConfig({
+  site,
+  output: 'static',
+  trailingSlash: 'always',
+  markdown: {
+    // Keep the supplied punctuation and only the explicit links in the article text.
+    processor: satteri({ features: { smartPunctuation: false, gfm: false } }),
+  },
+});
