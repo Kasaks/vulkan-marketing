@@ -108,18 +108,23 @@ for (const question of [
 ]) {
   assert.ok(formatSection.includes(question), 'Missing format call to action: ' + question);
 }
-assert.match(blog, /Анонс материала/);
+assert.doesNotMatch(blog, /Анонс материала|Фотография будет добавлена|Сейчас представлены анонсы|Перейти на канал в Дзене/);
 assert.match(blog, /<h1[^>]*>Блог об Авито<\/h1>/);
 for (const html of pages.slice(3, 3 + previewSlugs.length)) {
   assert.match(html, /Это анонс, а не полная статья/);
 }
-const publishedNewestFirst = [...publishedSlugs].sort((a, b) => publishedDates.get(b).localeCompare(publishedDates.get(a)));
-const cardSlugs = html => Array.from(
-  html.matchAll(/class="article-card-link" href="\/blog\/([^"]+)\/"/g),
-  match => match[1],
+const publishedCards = [...publishedSlugs]
+  .sort((a, b) => publishedDates.get(b).localeCompare(publishedDates.get(a)))
+  .map(slug => ({ slug, date: publishedDates.get(slug) }));
+const cards = html => Array.from(
+  html.matchAll(/class="article-card-link" href="\/blog\/([^"]+)\/"[^>]*>([\s\S]*?)<\/a>/g),
+  ([, slug, body]) => ({
+    slug,
+    date: body.match(/<time class="article-card-date" datetime="(\d{4}-\d{2}-\d{2})">[^<]+<\/time>/)?.[1],
+  }),
 );
-assert.deepEqual(cardSlugs(home), [...publishedNewestFirst, ...previewSlugs].slice(0, 3), 'Latest articles on the homepage');
-assert.deepEqual(cardSlugs(blog), [...publishedNewestFirst, ...previewSlugs], 'Article and preview order in the archive');
+assert.deepEqual(cards(home), publishedCards.slice(0, 3), 'Latest articles and dates on the homepage');
+assert.deepEqual(cards(blog), publishedCards, 'Published articles and dates in the archive');
 assert.match(errorPage, /noindex, follow/);
 const sitemap = await readOutput('sitemap.xml');
 assert.ok(!sitemap.includes('<loc>'), 'Demo sitemap should remain empty');

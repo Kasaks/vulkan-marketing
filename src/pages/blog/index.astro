@@ -4,7 +4,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import Icon from '../../components/Icon.astro';
-import { articles, dzenChannelUrl } from '../../data/articles';
+import { dzenChannelUrl, publishedArticles } from '../../data/articles';
 import '../../styles/landing.css';
 ---
 <BaseLayout title="Блог — Вулкан Маркетинг | Статьи об Авито" description="Блог агентства Вулкан Маркетинг: статьи и разборы о продвижении, аналитике, объявлениях и продажах на Авито.">
@@ -22,7 +22,7 @@ import '../../styles/landing.css';
         </div>
         <section aria-labelledby="blog-archive-title">
           <h2 id="blog-archive-title">Все материалы</h2>
-          <div class="article-list">{articles.map(article => <ArticleCard article={article} showCover={false} />)}</div>
+          <div class="article-list">{publishedArticles.map(article => <ArticleCard article={article} showCover={false} />)}</div>
         </section>
       </div>
     </div>
