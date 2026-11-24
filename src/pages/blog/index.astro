@@ -3,35 +3,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import Icon from '../../components/Icon.astro';
-import { dzenChannelUrl, publishedArticles } from '../../data/articles';
-import '../../styles/landing.css';
+import { publishedArticles } from '../../data/articles';
+
+const articleCount = publishedArticles.length;
+const countForm = new Intl.PluralRules('ru-RU').select(articleCount);
+const articleUnit = countForm === 'one' ? 'материал' : countForm === 'few' ? 'материала' : 'материалов';
 ---
 <BaseLayout title="Блог — Вулкан Маркетинг | Статьи об Авито" description="Блог агентства Вулкан Маркетинг: статьи и разборы о продвижении, аналитике, объявлениях и продажах на Авито.">
   <SiteHeader active="blog" />
-  <main id="main" class="blog-page section-space">
-    <div class="container">
-      <nav class="blog-breadcrumbs" aria-label="Навигационная цепочка">
-        <a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Блог</span>
-      </nav>
-      <div class="landing-split">
-        <div class="landing-blog-intro">
-          <h1>Блог об Авито</h1>
-          <p>Пишем о продвижении, аналитике и продажах на Авито.</p>
-          <a href={dzenChannelUrl} class="button button-outline">Канал в Дзене <Icon name="arrow" size={18} /></a>
+  <main id="main" class="blog-page">
+    <section class="blog-index-hero">
+      <div class="container">
+        <nav class="blog-breadcrumbs" aria-label="Навигационная цепочка"><a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">Блог</span></nav>
+        <div class="blog-index-heading">
+          <div><p class="section-kicker"><span class="kicker-line"></span>Блог Вулкан Маркетинг</p><h1>Авито.<br/><span>По существу.</span></h1></div>
+          <p>Статьи, наблюдения и разборы о продвижении бизнеса на Авито. Практика, аналитика и работа с объявлениями.</p>
         </div>
-        <section aria-labelledby="blog-archive-title">
-          <h2 id="blog-archive-title">Все материалы</h2>
-          <div class="article-list">{publishedArticles.map(article => <ArticleCard article={article} showCover={false} />)}</div>
-        </section>
       </div>
-    </div>
+    </section>
+    <section class="blog-archive section-space" aria-labelledby="blog-archive-title">
+      <div class="container">
+        <div class="blog-archive-heading"><h2 id="blog-archive-title">Материалы</h2><span>{articleCount} {articleUnit}</span></div>
+        <div class="blog-cards-grid">{publishedArticles.map(article => <ArticleCard article={article} />)}</div>
+      </div>
+    </section>
   </main>
   <SiteFooter />
 </BaseLayout>
-
-<style>
-  .blog-page { background: var(--soft); padding-top: clamp(27px, 4vw, 52px); }
-  h1 { font-size: clamp(42px, 6vw, 86px); text-wrap: balance; }
-  h2 { margin-bottom: 16px; font-size: clamp(23px, 2.3vw, 33px); }
-</style>
