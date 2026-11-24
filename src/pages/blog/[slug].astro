@@ -1,6 +1,6 @@
 ---
 import type { BlogArticle } from '../../data/articles';
-import { articles, dzenChannelUrl } from '../../data/articles';
+import { articles, dzenChannelUrl, formatArticleDate } from '../../data/articles';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
@@ -28,7 +28,7 @@ const related = articles.filter(item => item.slug !== article.slug).slice(0, 2);
           <p class="section-kicker"><span class="kicker-line"></span>{isPreview ? 'Анонс материала' : 'Статья · Вулкан Маркетинг'}</p>
           <h1>{article.title}</h1>
           {!ArticleContent && <p class="blog-article-lead">{article.excerpt}</p>}
-          {article.publishedAt && !isPreview && <time datetime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' })}</time>}
+          {article.publishedAt && !isPreview && <time datetime={article.publishedAt}>{formatArticleDate(article.publishedAt)}</time>}
         </header>
         {ArticleContent
           ? !article.coverInBody && <figure class="blog-article-original-cover">

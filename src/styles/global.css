@@ -516,6 +516,7 @@ body.modal-open{overflow:hidden}
 .article-card-body{padding:26px 26px 29px;display:flex;flex-direction:column;flex:1}
 .article-card-eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
 .article-card h3{font-size:clamp(22px,1.95vw,30px);line-height:1.18;margin-top:13px;letter-spacing:-.04em;overflow-wrap:break-word}
+.article-card-date{color:var(--muted);font-size:.875rem;line-height:1.45;margin-top:8px}
 .article-card-action{display:inline-flex;align-items:center;gap:12px;color:var(--accent);font-size:14px;font-weight:800;margin-top:auto;padding-top:33px}
 .article-list{border-top:1px solid var(--line)}
 .article-list .article-card{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;overflow:visible}

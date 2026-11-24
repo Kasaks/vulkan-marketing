@@ -84,7 +84,7 @@ const markdownModules = import.meta.glob<MarkdownInstance<MarkdownArticle>>(
   { eager: true },
 );
 
-const published = Object.entries(markdownModules)
+export const publishedArticles = Object.entries(markdownModules)
   .map(([file, { frontmatter, Content }]) => ({
     ...frontmatter,
     slug: file.slice(file.lastIndexOf('/') + 1, -3),
@@ -95,7 +95,15 @@ const published = Object.entries(markdownModules)
   }))
   .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 
-export const articles: BlogArticle[] = [...published, ...previews];
+export const articles: BlogArticle[] = [...publishedArticles, ...previews];
 
 export const latestArticles = (count = 3): BlogArticle[] =>
   articles.slice(0, count);
+
+export const formatArticleDate = (publishedAt: string): string =>
+  new Date(publishedAt).toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
