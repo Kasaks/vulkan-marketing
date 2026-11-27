@@ -6,6 +6,7 @@ const { title = site.title, description = site.description, noIndex = false, ima
 const socialImage = new URL(image || '/images/logo.jpg', Astro.site);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const indexable = !noIndex && !site.demoMode && import.meta.env.SITE_INDEXABLE === 'true';
+const metricaEnabled = import.meta.env.PROD && !site.demoMode && Astro.site?.origin === 'https://vulkanmarketing.ru';
 const organizationId = new URL('/#organization', Astro.site).href;
 const structuredData = {
   '@context': 'https://schema.org',
@@ -31,6 +32,19 @@ const structuredData = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {metricaEnabled && (
+      <script is:inline type="text/javascript">
+        if (location.origin === 'https://vulkanmarketing.ru') {
+          (function(m,e,t,r,i,k,a){
+              m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l=1*new Date();
+              for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+          })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114720179', 'ym');
+          ym(114720179, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+        }
+      </script>
+    )}
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow'} />
@@ -58,6 +72,7 @@ const structuredData = {
     </script>
   </head>
   <body>
+    {metricaEnabled && <noscript><div><img src="https://mc.yandex.ru/watch/114720179" style="position:absolute; left:-9999px;" alt="" /></div></noscript>}
     <a class="skip-link" href="#main">Перейти к содержимому</a>
     <slot />
   </body>
