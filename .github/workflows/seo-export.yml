@@ -1,0 +1,32 @@
+name: SEO — выгрузка Яндекс Вебмастера
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 9 * * *'
+      timezone: Europe/Moscow
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seo-yandex-webmaster-export
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Обновить Google Таблицу
+        env:
+          YANDEX_WEBMASTER_SITE: ${{ vars.YANDEX_WEBMASTER_SITE || 'https://vulkanmarketing.ru' }}
+          YANDEX_WEBMASTER_TOKEN: ${{ secrets.YANDEX_WEBMASTER_TOKEN }}
+          GOOGLE_SHEETS_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SHEETS_SERVICE_ACCOUNT_JSON }}
+          SEO_SPREADSHEET_ID: ${{ secrets.SEO_SPREADSHEET_ID }}
+        run: node scripts/export-yandex-webmaster.mjs

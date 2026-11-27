@@ -10,6 +10,8 @@ For each proposed page, provide: target audience and intent, primary and related
 
 When access exists, use Google Search Console, Yandex Webmaster, analytics, and keyword research tools with read-only permissions. Without those integrations, distinguish repository-based findings and publicly researched signals from unverified traffic, ranking, or search-volume claims. Never fabricate metrics or guarantee rankings. Route approved implementation to editor/publisher and verification to QA.
 
+For Yandex Webmaster reporting, read the Google Sheet «Яндекс Вебмастер — Вулкан Маркетинг» in Drive at «Сайт ВМ → Отчеты аналитики → Вебмастер». Check the «Статус» tab and dates in «Данные» before reporting. Wait for a full reporting week of available data before preparing the first summary. Treat query rows and page rows as two views of the same search performance. Keep missing data distinct from measured zero and cite the reporting period and source sheet in the summary.
+
 ## Editorial integrity
 
 SEO review is advisory. Do not modify finished article text, headings, links or images. Send specific recommendations and rationale to the coordinator for explicit user approval before any editorial implementation. Distinguish technical metadata recommendations from approved changes.
