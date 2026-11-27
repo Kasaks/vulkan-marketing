@@ -10,6 +10,10 @@ const contactHref = navigationHref('contact', Astro.url.pathname);
     <a class="brand" href="/" aria-label="Вулкан Маркетинг — на главную">
       <img src="/images/logo.jpg" alt="" width="64" height="64" />
     </a>
+    <button class="menu-toggle icon-button" type="button" aria-label="Основное меню" aria-expanded="false" aria-controls="main-nav">
+      <Icon name="menu" />
+      <Icon name="close" />
+    </button>
     <nav id="main-nav" class="main-nav" aria-label="Основная навигация">
       {navigation.map(link => <a href={navigationHref(link.anchor, Astro.url.pathname)} aria-current={active === 'blog' && link.anchor === 'blog' ? 'page' : undefined}>{link.label}</a>)}
     </nav>

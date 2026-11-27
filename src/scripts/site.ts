@@ -13,6 +13,30 @@ themeButton?.addEventListener('click', () => {
 });
 syncTheme();
 
+const menuButton = document.querySelector<HTMLButtonElement>('.menu-toggle');
+const mainNav = document.getElementById('main-nav');
+if (menuButton && mainNav) {
+  const mobileHeader = window.matchMedia('(max-width: 760px)');
+  const isMenuExpanded = () => menuButton.getAttribute('aria-expanded') === 'true';
+  const setMenuExpanded = (expanded: boolean) => menuButton.setAttribute('aria-expanded', String(expanded));
+
+  menuButton.addEventListener('click', () => setMenuExpanded(!isMenuExpanded()));
+  mainNav.addEventListener('click', event => {
+    if (event.target instanceof Element && event.target.closest('a[href]')) setMenuExpanded(false);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !isMenuExpanded()) return;
+    setMenuExpanded(false);
+    if (!document.querySelector('dialog[open]')) menuButton.focus();
+  });
+  mobileHeader.addEventListener('change', event => {
+    if (event.matches && mainNav.contains(document.activeElement)) menuButton.focus();
+    setMenuExpanded(false);
+  });
+
+  document.documentElement.classList.add('mobile-menu-ready');
+}
+
 document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(carousel => {
   const slides = Array.from(carousel.querySelectorAll<HTMLElement>('[data-slide]'));
   const counter = carousel.querySelector<HTMLElement>('[data-count]');
