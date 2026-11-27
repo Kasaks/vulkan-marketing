@@ -62,6 +62,13 @@ for (let i = 0; i < pages.length; i++) {
   assert.match(html, /name="robots" content="noindex, follow"/, 'Demo mode must remain noindex');
   assert.match(html, /href="\/blog\/"/);
   assert.match(html, /id="contact-dialog"/);
+  const menuToggle = html.match(/<button\b[^>]*class="menu-toggle\b[^"]*"[^>]*>/)?.[0];
+  assert.ok(menuToggle, 'Missing mobile navigation toggle on page ' + i);
+  assert.match(menuToggle, /type="button"/);
+  assert.match(menuToggle, /aria-label="[^"]+"/);
+  assert.match(menuToggle, /aria-expanded="false"/);
+  assert.match(menuToggle, /aria-controls="main-nav"/);
+  assert.match(html, /<nav id="main-nav"/);
   assert.ok(!/<form\b/i.test(html), 'No contact forms');
   const ids = Array.from(html.matchAll(/\bid="([^"]+)"/g), match => match[1]);
   assert.equal(new Set(ids).size, ids.length, 'No duplicated ID in page ' + i);
@@ -93,7 +100,6 @@ const footerMenu = home.match(/<footer\b[\s\S]*?<nav[^>]*>([\s\S]*?)<\/nav>/)?.[
 assert.ok(mainMenu && footerMenu, 'Both menus are present');
 assert.equal(mainMenu, footerMenu, 'Header and footer menus match');
 assert.match(mainMenu, /<a href="\/blog\/">Блог<\/a>/);
-assert.doesNotMatch(home, /class="menu-toggle\b/);
 const discussion = home.match(/<section[^>]* id="discuss"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
 const contacts = home.match(/<section[^>]* id="contact"[^>]*>([\s\S]*?)<\/section>/)?.[1] || '';
 assert.match(discussion, /class="formats-link" href="#services"/, 'Discussion links to formats');
