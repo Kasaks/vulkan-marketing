@@ -44,12 +44,14 @@ const related = articles.filter(item => item.slug !== article.slug).slice(0, 2);
           {isPreview ? <aside class="blog-preview-note"><strong>Это анонс, а не полная статья.</strong><p>Исходный текст и фотографии с Дзена пока не удалось получить. Ниже — доступные фрагменты авторского анонса.</p></aside> : null}
           {isPreview
             ? article.previewParagraphs.map(paragraph => <p>{paragraph}</p>)
-            : ArticleContent ? <div class="blog-text-section blog-markdown"><ArticleContent /></div>
-            : article.sections.map(section => <section class="blog-text-section">
-                {section.heading && <h2>{section.heading}</h2>}
-                {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
-                {section.images?.map((src, i) => <figure><img src={src} alt={`Иллюстрация к статье «${article.title}», ${i + 1}`} loading="lazy" decoding="async" /></figure>)}
-              </section>)}
+            : ArticleContent ? <div id="article" class="blog-text-section blog-markdown"><ArticleContent /></div>
+            : <div id="article">
+                {article.sections.map(section => <section class="blog-text-section">
+                  {section.heading && <h2>{section.heading}</h2>}
+                  {section.paragraphs.map(paragraph => <p>{paragraph}</p>)}
+                  {section.images?.map((src, i) => <figure><img src={src} alt={`Иллюстрация к статье «${article.title}», ${i + 1}`} loading="lazy" decoding="async" /></figure>)}
+                </section>)}
+              </div>}
           <div class="blog-source-link">
             <p>{isPreview ? 'Оригинальная публикация доступна на канале автора.' : 'Материал также опубликован на Дзене.'}</p>
             <a href={article.originalUrl || dzenChannelUrl} target="_blank" rel="noopener noreferrer">{isPreview ? 'Открыть канал на Дзене' : 'Открыть оригинал на Дзене'} <Icon name="arrow" size={20} /></a>
