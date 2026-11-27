@@ -138,9 +138,9 @@ export const services = [
 export const contactIntro = 'Расскажите, чего хотите добиться на Авито. Мы оценим задачу и, если сможем помочь, предложим, с чего начать.';
 
 export const contacts = [
-  { name: 'Telegram', url: 'https://t.me/kam_kubuk' },
-  { name: 'MAX', url: 'https://max.ru/u/f9LHodD0cOI2Gm1Vk7p-HsIbcNZvgMRudO9B9MSN5H36iH-uD4GiWUQCIhs' },
-  { name: 'ВКонтакте', url: 'https://vk.me/kam_kubuk' },
+  { name: 'Telegram', url: 'https://t.me/kam_kubuk', goal: 'contact_telegram' },
+  { name: 'MAX', url: 'https://max.ru/u/f9LHodD0cOI2Gm1Vk7p-HsIbcNZvgMRudO9B9MSN5H36iH-uD4GiWUQCIhs', goal: 'contact_max' },
+  { name: 'ВКонтакте', url: 'https://vk.me/kam_kubuk', goal: 'contact_vk' },
 ];
 
 export const telegramChannelUrl = 'https://t.me/vulkan_marketing';
