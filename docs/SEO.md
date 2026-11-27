@@ -58,7 +58,7 @@ https://webmaster.yandex.ru/blog/yandex-search-alice
 
 ## Выгрузка Яндекс Вебмастера
 
-GitHub Actions запускает выгрузку ежедневно в 09:17 по Москве. Ручной запуск доступен в **Actions → SEO — выгрузка Яндекс Вебмастера → Run workflow**. Код выгрузки находится в `scripts/export-yandex-webmaster.mjs`.
+GitHub Actions запускает выгрузку по пятницам в 09:17 по Москве. Ручной запуск доступен в **Actions → SEO — выгрузка Яндекс Вебмастера → Run workflow**. Код выгрузки находится в `scripts/export-yandex-webmaster.mjs`.
 
 1. В [Яндекс OAuth](https://oauth.yandex.ru/) выпустите токен согласно [документации Вебмастера](https://yandex.ru/dev/webmaster/doc/ru/tasks/how-to-get-oauth). Используйте Яндекс ID, у которого есть доступ к сайту в Вебмастере. По документации токен, полученный этим способом, действует шесть месяцев. При истечении срока замените его в секрете GitHub.
 2. В Google Cloud включите [Google Sheets API](https://console.cloud.google.com/apis/library/sheets.googleapis.com), создайте сервисный аккаунт и его [ключ JSON](https://cloud.google.com/iam/docs/keys-create-delete). Добавьте адрес сервисного аккаунта как редактора таблицы **Яндекс Вебмастер — Вулкан Маркетинг** в папке **Сайт ВМ → Отчеты аналитики → Вебмастер**.

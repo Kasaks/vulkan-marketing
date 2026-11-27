@@ -3,7 +3,7 @@ name: SEO — выгрузка Яндекс Вебмастера
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 9 * * *'
+    - cron: '17 9 * * 5'
       timezone: Europe/Moscow
 
 permissions:
