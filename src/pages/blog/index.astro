@@ -30,3 +30,38 @@ const articleUnit = countForm === 'one' ? 'материал' : countForm === 'fe
   </main>
   <SiteFooter />
 </BaseLayout>
+
+<style is:global>
+  .blog-index-hero {
+    padding-block-start: clamp(1rem, 1.5vw, 1.375rem);
+  }
+
+  .blog-index-hero .blog-breadcrumbs {
+    margin-block-end: clamp(1.5rem, 2.5vw, 2rem);
+  }
+
+  .blog-index-heading {
+    display: grid;
+    gap: clamp(1rem, 1.5vw, 1.25rem);
+  }
+
+  .blog-index-heading > p {
+    max-inline-size: 62ch;
+    line-height: 1.55;
+  }
+
+  .blog-archive {
+    padding-block-start: clamp(2.5rem, 4vw, 3.5rem);
+  }
+
+  .blog-archive-heading {
+    display: grid;
+    gap: .5rem;
+    margin-block-end: clamp(1.25rem, 2vw, 1.75rem);
+  }
+
+  .blog-archive-heading > span {
+    color: var(--muted);
+    font-size: .9375rem;
+  }
+</style>
